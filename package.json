@@ -1,9 +1,11 @@
 {
-  "scripts": {},
-  "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "eslint": "^9.28.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.0"
-  }
+	"scripts": {
+		"format-check-staged": "bash ./scripts/format.sh format_check_staged",
+		"format-fix-staged": "bash ./scripts/format.sh format_fix_staged"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"eslint": "^9.28.0",
+		"husky": "^9.1.7"
+	}
 }
