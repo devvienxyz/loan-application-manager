@@ -5,7 +5,7 @@ BIOME_FILE_TYPES='\.(ts|tsx|js|json|jsonc|jsx)$'
 
 # Define paths to exclude from checks/fixes
 # ADDED: |^\.vscode/  to exclude any file within the .vscode directory
-EXCLUDE_PATHS='jest.config.js|^dist/|/dist/|^temp/|/temp/|^node_modules/|/node_modules/|^\.husky/|package-lock\.json|^\.vscode/'
+EXCLUDE_PATHS='jest.config.cjs|^dist/|/dist/|^temp/|/temp/|^node_modules/|/node_modules/|^\.husky/|package-lock\.json|^\.vscode/'
 
 format_check_staged() {
   echo "Checking staged files for formatting..."

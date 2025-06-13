@@ -18,7 +18,7 @@
 			"**/.idea/**",
 			"**/.DS_Store/**",
 			"**/package-lock.json",
-			"**/jest.config.js"
+			"**/jest.config.cjs"
 		]
 	},
 	"formatter": {
