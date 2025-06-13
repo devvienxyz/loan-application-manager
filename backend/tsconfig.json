@@ -1,7 +1,14 @@
 {
 	"compilerOptions": {
 		"forceConsistentCasingInFileNames": true,
-		"lib": ["ES2021", "DOM"],
-		"strict": true
-	}
+		"strict": true,
+		"composite": true,
+		"declaration": true,
+		"outDir": "dist",
+		"rootDir": "src",
+		"moduleResolution": "bundler",
+		"module": "ESNext",
+		"target": "ESNext"
+	},
+	"include": ["src"]
 }
