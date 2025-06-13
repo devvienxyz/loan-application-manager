@@ -8,7 +8,10 @@
 		"dev": "tsup src/server.ts --watch --onSuccess \"node dist/server.js\"",
 		"build": "tsup",
 		"start": "node dist/server.js",
-		"test": "jest"
+		"test": "jest",
+		"prisma:migrate": "prisma migrate dev --schema=../database/prisma/schema.prisma",
+		"prisma:generate": "prisma generate --schema=../database/prisma/schema.prisma",
+		"prisma:studio": "prisma studio --schema=../database/prisma/schema.prisma"
 	},
 	"keywords": [],
 	"author": "",
