@@ -4,10 +4,15 @@
 	"private": true,
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
+	"type": "module",
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
 			"types": "./dist/index.d.ts"
+		},
+		"./types/loan": {
+			"import": "./dist/types/loan.js",
+			"types": "./dist/types/loan.d.ts"
 		}
 	},
 	"scripts": {
@@ -15,5 +20,6 @@
 		"dev": "tsc -w -p tsconfig.json",
 		"clean": "rm -rf dist"
 	},
-	"files": ["dist"]
+	"files": ["dist"],
+	"sideEffects": false
 }

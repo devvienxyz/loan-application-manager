@@ -3,11 +3,13 @@
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"jsx": "react-jsx",
-		"lib": ["ES2021", "DOM"],
+		"lib": ["ESNext", "DOM"],
 		"types": ["vitest/globals", "@testing-library/jest-dom"],
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]
-		}
+		},
+		"moduleResolution": "bundler",
+		"module": "esnext"
 	}
 }
