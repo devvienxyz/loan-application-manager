@@ -1,1 +1,1 @@
-export { default as errorHandlerMiddleware } from "./errorHandler";
+export { default as errorHandlerMiddleware } from "./errorHandler.js";

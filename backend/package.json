@@ -3,18 +3,15 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
-		"dev": "nodemon src/server.ts",
-		"build": "tsc",
-		"start": "node dist/server.js",
-		"test": "jest --coverage",
-		"lint": "eslint . --ext .ts",
-		"prepare": "tsc"
+		"dev": "tsup src/server.ts --watch --onSuccess \"node dist/server.js\"",
+		"build": "tsup",
+		"start": "node dist/server.js"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"type": "commonjs",
 	"dependencies": {
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.2",

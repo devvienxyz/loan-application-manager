@@ -4,11 +4,14 @@
 		"strict": true,
 		"composite": true,
 		"declaration": true,
-		"outDir": "dist",
-		"rootDir": "src",
 		"moduleResolution": "bundler",
+		"moduleDetection": "force",
 		"module": "ESNext",
-		"target": "ESNext"
+		"target": "ESNext",
+		"resolveJsonModule": true,
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"allowSyntheticDefaultImports": true
 	},
 	"include": ["src"]
 }
