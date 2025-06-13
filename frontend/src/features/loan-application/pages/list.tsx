@@ -1,4 +1,4 @@
-import { useLoanAppStore } from "@/app/store";
+import { useLoanAppStore } from "../store";
 
 export default function LoanApplications() {
 	const selectedStatus = useLoanAppStore((s) => s.selectedStatus);
