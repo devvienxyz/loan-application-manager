@@ -1,0 +1,51 @@
+services:
+  database:
+    image: postgres:15
+    container_name: loan_db
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - loan-net
+
+  backend:
+    build:
+      context: ./backend
+    container_name: loan_backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    command: npm run dev
+    depends_on:
+      - database
+    networks:
+      - loan-net
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: loan_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    command: npm run dev
+    depends_on:
+      - backend
+    networks:
+      - loan-net
+
+volumes:
+  pgdata:
+
+networks:
+  loan-net:
