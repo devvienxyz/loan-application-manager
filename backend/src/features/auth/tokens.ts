@@ -1,0 +1,13 @@
+import type { AuthTokenPayload } from "@loan-app-mgr/shared/types/auth";
+import jwt from "jsonwebtoken";
+import { config } from "../../config";
+
+export const signAccessToken = (payload: AuthTokenPayload) =>
+	jwt.sign(payload, config.accessTokenSecret, { expiresIn: "15m" });
+
+export const signRefreshToken = (payload: AuthTokenPayload) =>
+	jwt.sign(payload, config.refreshTokenSecret, { expiresIn: "7d" });
+
+export const verifyAccessToken = (token: string) => jwt.verify(token, config.accessTokenSecret) as AuthTokenPayload;
+
+export const verifyRefreshToken = (token: string) => jwt.verify(token, config.refreshTokenSecret) as AuthTokenPayload;

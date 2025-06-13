@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "CommonJS",
+		"moduleResolution": "Node",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true,
+		"baseUrl": ".",
+		"paths": {
+			"@loan-app-mgr/shared/*": ["shared/src/*"]
+		}
+	},
+	"exclude": ["dist", "node_modules"]
+}

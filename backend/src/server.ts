@@ -1,14 +1,10 @@
 // responsible for bootstrapping and running the exxpress app
-import dotenv from "dotenv";
-import app from "./app.js";
-
-dotenv.config();
-
-const PORT = process.env.PORT ? Number.parseInt(process.env.PORT) : 3000;
+import app from "./app";
+import { config } from "./config";
 
 try {
-	app.listen(PORT, () => {
-		console.log(`🚀 Server running on http://localhost:${PORT}`);
+	app.listen(config.port, () => {
+		console.log(`🚀 Server running on http://localhost:${config.port}`);
 	});
 } catch (err) {
 	console.error("❌ Failed to start server:", err);
