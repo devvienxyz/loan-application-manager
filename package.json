@@ -1,5 +1,6 @@
 {
 	"scripts": {
+		"start:dev": "bash scripts/run.sh",
 		"format-check-staged": "bash ./scripts/format.sh format_check_staged",
 		"format-fix-staged": "bash ./scripts/format.sh format_fix_staged"
 	},

@@ -51,7 +51,7 @@ npm install  # Installs all workspace dependencies
 ### 3. Run Everything
 
 ```bash
-docker compose up --build
+npm run start:dev
 ```
 
 API: <http://localhost:3000>

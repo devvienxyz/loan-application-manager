@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+ROOT_DIR=$(dirname "$(dirname "$0")")
+cd "$ROOT_DIR"
+
 echo "🔐 Loading environment..."
 if [ ! -f .env ]; then
   echo "❌ .env file not found. Please create it first."
@@ -8,7 +11,7 @@ if [ ! -f .env ]; then
 fi
 
 echo "🐘 Starting Postgres via Docker..."
-docker-compose up -d
+docker compose up -d
 
 echo "🔄 Running Prisma migration..."
 cd backend
