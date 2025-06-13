@@ -17,7 +17,8 @@
 			"**/.vscode/**",
 			"**/.idea/**",
 			"**/.DS_Store/**",
-			"**/package-lock.json"
+			"**/package-lock.json",
+			"**/jest.config.js"
 		]
 	},
 	"formatter": {
