@@ -1,20 +1,15 @@
+import type { User } from "@loan-app-mgr/shared/types/auth";
 import bcrypt from "bcryptjs";
 
-type ValidUserMinimumInfo = {
-	id: string;
-	email: string;
-	role: "admin" | "user";
-} | null;
-
 // TODO: Replace with real user validation logic
-export const validateUser = async (email: string, password: string): Promise<ValidUserMinimumInfo> => {
+export const validateUser = async (email: string, password: string): Promise<User | null> => {
 	if (email === "admin@example.com" && password === "admin123") {
 		return { id: "u1", email, role: "admin" };
 	}
 	return null;
 };
 
-const users: any[] = []; // TODO: Replace with DB model
+const users: User[] = [];
 
 export const createUser = async (fullName: string, email: string, password: string) => {
 	const existing = users.find((u) => u.email === email);

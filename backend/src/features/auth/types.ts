@@ -1,5 +1,5 @@
 import type { AuthTokenPayload } from "@loan-app-mgr/shared/types/auth";
-import type { Request, Response } from "express";
+import type { Request } from "express";
 
 export interface AuthenticatedRequest extends Request {
 	cookies: Record<string, string>;
@@ -29,5 +29,8 @@ export interface LoginResponseBody {
 	message: string;
 }
 
-export type TypedRequest<T> = Request<unknown, unknown, T>;
-export type TypedResponse<T> = Response<T>;
+export interface SignupRequestBody {
+	fullName: string;
+	email: string;
+	password: string;
+}

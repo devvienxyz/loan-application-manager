@@ -1,7 +1,8 @@
 import type { User } from "@loan-app-mgr/shared/types/auth";
-import type { Request, Response } from "express";
+import type { Request, RequestHandler, Response } from "express";
 import { createUser, validateUser } from "./service";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "./tokens";
+import type { LoginRequestBody, SignupRequestBody } from "./types";
 import { setAuthCookies } from "./utils";
 
 const buildPayload = (user: User) => ({
@@ -10,9 +11,14 @@ const buildPayload = (user: User) => ({
 	role: user.role,
 });
 
-export const signup = async (req: Request, res: Response) => {
+//
+// SIGNUP
+//
+
+type SignupHandler = RequestHandler<unknown, unknown, SignupRequestBody>;
+export const signup: SignupHandler = async (req, res) => {
 	const { fullName, email, password } = req.body;
-	if (!email || !password || !fullName) return res.status(400).json({ message: "Missing fields" });
+	if (!email || !password || !fullName) res.status(400).json({ message: "Missing fields" });
 
 	try {
 		const user = await createUser(fullName, email, password);
@@ -29,11 +35,19 @@ export const signup = async (req: Request, res: Response) => {
 	}
 };
 
-export const login = async (req: Request, res: Response) => {
+//
+// LOGIN
+//
+
+type LoginHandler = RequestHandler<unknown, unknown, LoginRequestBody>;
+export const login: LoginHandler = async (req, res) => {
 	const { email, password } = req.body;
 	const user = await validateUser(email, password);
 
-	if (!user) return res.status(401).json({ message: "Invalid credentials" });
+	if (!user) {
+		res.status(401).json({ message: "Invalid credentials" });
+		return;
+	}
 
 	const payload = buildPayload(user);
 
@@ -41,10 +55,14 @@ export const login = async (req: Request, res: Response) => {
 	res.json({ message: "Logged in" });
 };
 
-export const refresh = (req: Request, res: Response) => {
+//
+// REFRESH
+//
+
+export const refresh: RequestHandler = (req, res) => {
 	const token = req.signedCookies?.refresh_token;
 
-	if (!token) return res.sendStatus(401);
+	if (!token) res.sendStatus(401);
 
 	try {
 		const payload = verifyRefreshToken(token);
