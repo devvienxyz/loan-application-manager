@@ -1,23 +1,33 @@
 import type { User } from "@loan-app-mgr/shared/types/auth";
 import bcrypt from "bcryptjs";
+import { UserRepository } from "./repository";
 
-// TODO: Replace with real user validation logic
 export const validateUser = async (email: string, password: string): Promise<User | null> => {
-	if (email === "admin@example.com" && password === "admin123") {
-		return { id: "u1", email, role: "admin" };
-	}
-	return null;
+	const user = await UserRepository.findByEmail(email);
+
+	if (!user) return null;
+
+	const isMatch = await bcrypt.compare(password, user.password);
+	if (!isMatch) return null;
+
+	return { id: user.id, email: user.email, role: user.role as "admin" | "user" };
 };
 
-const users: User[] = [];
-
-export const createUser = async (fullName: string, email: string, password: string) => {
-	const existing = users.find((u) => u.email === email);
+export const createUser = async (
+	fullName: string,
+	email: string,
+	password: string,
+): Promise<Omit<User, "password">> => {
+	const existing = await UserRepository.findByEmail(email);
 	if (existing) throw new Error("Email already in use");
 
 	const hashed = await bcrypt.hash(password, 12);
-	const newUser = { id: String(users.length + 1), fullName, email, password: hashed, role: "user" };
+	const newUser = await UserRepository.create({
+		fullName,
+		email,
+		password: hashed,
+		role: "user",
+	});
 
-	users.push(newUser); // Replace with DB insert
 	return { id: newUser.id, email: newUser.email, role: newUser.role };
 };
