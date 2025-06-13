@@ -1,18 +1,13 @@
-import "./App.css";
+import Layout from "@/app/layout";
+import AppRoutes from "@/app/router";
+import { BrowserRouter } from "react-router-dom";
 
 export default function App() {
 	return (
-		<main>
-			<div className="bg-primary-bg min-h-screen">
-				<div className="">Loan Application Manager</div>
-				<div className="">
-					{["Pending", "Approved"].map((loanStatus) => (
-						<button key={`loanStatus-${loanStatus}`} type="button" className="h-12 w-full">
-							{loanStatus}
-						</button>
-					))}
-				</div>
-			</div>
-		</main>
+		<BrowserRouter>
+			<Layout>
+				<AppRoutes />
+			</Layout>
+		</BrowserRouter>
 	);
 }
