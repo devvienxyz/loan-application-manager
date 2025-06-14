@@ -1,0 +1,17 @@
+node_modules
+dist
+.git
+*.log
+frontend/dist
+backend/dist
+shared/dist
+frontend/Dockerfile
+backend/Dockerfile
+docker-compose.yml
+.env
+.vscode
+.idea
+build
+coverage
+tmp
+.cache

@@ -18,7 +18,9 @@
 			"**/.idea/**",
 			"**/.DS_Store/**",
 			"**/package-lock.json",
-			"**/jest.config.cjs"
+			"**/jest.config.cjs",
+			".npmrc",
+			".dockerignore"
 		]
 	},
 	"formatter": {
