@@ -1,1 +1,3 @@
-npx run format-check-staged --workspace-root
+#!/bin/sh
+
+bash scripts/format.sh format_check_staged
