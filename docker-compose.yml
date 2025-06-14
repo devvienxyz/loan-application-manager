@@ -1,13 +1,13 @@
 services:
   database:
-    image: postgres:15
-    container_name: loan_db
+    image: postgres:15-alpine
     ports:
       - "5432:5432"
     env_file:
       - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./scripts/sql:/docker-entrypoint-initdb.d/
     networks:
       - loan-net
 
