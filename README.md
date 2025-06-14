@@ -51,7 +51,7 @@ npm install  # Installs all workspace dependencies
 ### 3. Run Everything
 
 ```bash
-npm run start:dev
+docker compose up --build
 ```
 
 API: <http://localhost:3000>
@@ -60,7 +60,7 @@ Frontend: <http://localhost:5173>
 
 PostgreSQL: port 5432
 
-Prisma Studio (optional): npx prisma studio --schema=database/prisma/schema.prisma
+Prisma Studio (optional): npx prisma studio --schema=backend/prisma/schema.prisma
 
 ## 🛠 Development
 
@@ -73,7 +73,7 @@ npm run --workspace=backend prisma:migrate
 Seed Database
 
 ```bash
-npm run --workspace=backend prisma db seed --schema=../database/prisma/schema.prisma
+npm run --workspace=backend prisma db seed --schema=../backend/prisma/schema.prisma
 ```
 
 Format/Lint Staged

@@ -25,7 +25,7 @@ done
 
 echo "🔄 Running Prisma migration..."
 cd backend
-npx prisma generate --schema=../database/prisma/schema.prisma
-npx prisma migrate dev --schema=../database/prisma/schema.prisma
+npx prisma generate --schema=../backend/prisma/schema.prisma
+npx prisma migrate dev --schema=../backend/prisma/schema.prisma
 
 echo "✅ Done. Database is ready and up."

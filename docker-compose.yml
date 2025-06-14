@@ -1,13 +1,27 @@
 services:
   database:
     image: postgres:15-alpine
+    container_name: loan-application-manager-database
     ports:
-      - "5432:5432"
+      - "5433:5432"
     env_file:
       - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./scripts/sql:/docker-entrypoint-initdb.d/
+    networks:
+      - loan-net
+
+  migrate:
+    build:
+      context: .
+      dockerfile: scripts/migrate/Dockerfile
+    container_name: loan_prisma_migrate
+    depends_on:
+      - database
+    env_file:
+      - .env
+      - ./backend/.env
     networks:
       - loan-net
 
@@ -26,7 +40,7 @@ services:
     working_dir: /app
     command: npm run dev
     depends_on:
-      - database
+      - migrate
     networks:
       - loan-net
 

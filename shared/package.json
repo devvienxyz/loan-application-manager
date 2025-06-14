@@ -21,5 +21,8 @@
 		"clean": "rm -rf dist"
 	},
 	"files": ["dist"],
-	"sideEffects": false
+	"sideEffects": false,
+	"dependencies": {
+		"tsup": "^8.5.0"
+	}
 }
