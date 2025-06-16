@@ -1,20 +1,21 @@
 import { useMutation } from "@tanstack/react-query";
-import { login, register, getMe, logout as logoutApi } from "../service";
+import { login, register, logout as logoutApi } from "../service";
 import { useAuthStore } from "../store";
+import { GetMeData } from "@loan-app-mgr/shared/types/auth";
 
 export function useLogin() {
 	const loginStore = useAuthStore((s) => s.login);
 
 	return useMutation({
 		mutationFn: login,
-		onSuccess: async () => {
-			try {
-				await getMe();
-				loginStore();
-			} catch {
-				// handle error (cookies not set, etc)
-			}
-		},
+    onSuccess: (response: { user: GetMeData }) => {
+      console.log("Login successful, user data from response:", response.user);
+      loginStore(response.user);
+    },
+    onError: (error) => {
+      // TODO: Handle login error
+      console.error("Error during login:", error);
+    },
 	});
 }
 
@@ -23,13 +24,13 @@ export function useRegister() {
 
 	return useMutation({
 		mutationFn: register,
-		onSuccess: async () => {
-			try {
-				const {data: getMeData} = await getMe();
-        console.log(getMeData)
-				loginStore();
-			} catch {}
-		},
+    onSuccess: (response: { user: GetMeData }) => {
+      console.log("Registration successful, user data from response:", response.user);
+      loginStore(response.user);
+    },
+    onError: (error) => {
+      console.error("Error during registration:", error);
+    },
 	});
 }
 

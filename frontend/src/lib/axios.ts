@@ -7,16 +7,17 @@ const api = axios.create({
 	headers: { "Content-Type": "application/json" },
 });
 
+const authRoutes = ["/auth/login", "/auth/signup", "/auth/refresh"];
+const isAuthRoute = (url: string) => authRoutes.some((route) => url.includes(route));
+
 api.interceptors.response.use(
 	(res) => res,
 	async (err) => {
 		const originalRequest = err.config;
+		const is401 = err.response?.status === 401;
+		const isRetryable = !originalRequest._retry && !isAuthRoute(originalRequest.url)
 
-		if (
-			err.response?.status === 401 &&
-			!originalRequest._retry &&
-			!originalRequest.url.includes("/auth/refresh")
-		) {
+      if (is401 && isRetryable) {
 			originalRequest._retry = true;
 
 			try {
@@ -26,7 +27,7 @@ api.interceptors.response.use(
 				if ((refreshErr as AxiosError).response?.status === 401) {
 					Promise.resolve().then(() => {
 						useAuthStore.getState().logout(); // clean logout
-						window.location.href = "/auth";   // optional redirect
+						window.location.href = "/";
 					});
 				}
 				return Promise.reject(refreshErr);

@@ -1,6 +1,7 @@
 import type { NextFunction, Response } from "express";
 import type { AuthenticatedRequest } from "./types";
 import { verifyAccessToken } from "./tokens";
+import { normalizeTokenPayloadToUser } from "./utils";
 
 export const requireAuth = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
 	if (!req.user) {
@@ -25,3 +26,26 @@ export const decodeAccessToken = (
 
 	next();
 };
+
+
+export const authenticate = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req.signedCookies?.access_token;
+
+  if (!token) {
+    res.sendStatus(401);
+    return;
+  }
+
+  try {
+    const payload = verifyAccessToken(token);
+    req.user = normalizeTokenPayloadToUser(payload);
+    return next();
+  } catch {
+    res.sendStatus(401);
+    return;
+  }
+}

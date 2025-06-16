@@ -4,7 +4,7 @@ export interface AuthCredentials {
 }
 
 export interface AuthTokenPayload {
-	userId: string;
+	id: string;
 	email: string;
 	role?: string;
 	iat?: number;

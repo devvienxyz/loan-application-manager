@@ -1,16 +1,9 @@
-import type { GetMeData, User } from "@loan-app-mgr/shared/types/auth";
+import type { User } from "@loan-app-mgr/shared/types/auth";
 import type { Request, RequestHandler, Response } from "express";
 import { createUser, validateUser } from "./service";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "./tokens";
-import type { LoginRequestBody, SignupRequestBody } from "./types";
-import { setAuthCookies } from "./utils";
-
-const buildPayload = (user: User) => ({
-	userId: user.id,
-	email: user.email,
-	role: user.role,
-  fullName: user.fullName,
-});
+import type { AuthenticatedRequest, LoginRequestBody, SignupRequestBody } from "./types";
+import { formatUserResponse, setAuthCookies } from "./utils";
 
 //
 // SIGNUP
@@ -26,11 +19,10 @@ export const signup: SignupHandler = async (req, res) => {
   }
 
 	try {
-		const user = await createUser(fullName, email, password);
-		const payload = buildPayload(user);
+		const user: User | null = await createUser(fullName, email, password);
 
-		setAuthCookies(res, signAccessToken(payload), signRefreshToken(payload));
-		res.status(201).json({ message: "User registered" });
+		setAuthCookies(res, signAccessToken(user), signRefreshToken(user));
+		res.status(201).json({ user: formatUserResponse(user) });
     // this will auto login the user
 	} catch (err: unknown) {
 		if (err instanceof Error) {
@@ -48,17 +40,15 @@ export const signup: SignupHandler = async (req, res) => {
 type LoginHandler = RequestHandler<unknown, unknown, LoginRequestBody>;
 export const login: LoginHandler = async (req, res) => {
 	const { email, password } = req.body;
-	const user = await validateUser(email, password);
+	const user: User | null = await validateUser(email, password);
 
 	if (!user) {
 		res.status(401).json({ message: "Invalid credentials" });
 		return;
 	}
 
-	const payload = buildPayload(user);
-
-	setAuthCookies(res, signAccessToken(payload), signRefreshToken(payload));
-	res.json({ message: "Logged in" });
+	setAuthCookies(res, signAccessToken(user), signRefreshToken(user));
+	res.json({ user: formatUserResponse(user) });
 };
 
 //
@@ -87,10 +77,8 @@ export const logout = (_req: Request, res: Response) => {
 	res.clearCookie("access_token").clearCookie("refresh_token").sendStatus(204);
 };
 
-export const getMe = (req: Request, res: Response) => {
-  const responseData: GetMeData = {
-    fullName: req?.user?.fullName || req?.user?.email || "Guest",
-    role: req.user?.role || "user",
-  }
-	res.json(responseData);
+export const getMe = (req: AuthenticatedRequest, res: Response) => {
+  const { fullName, role } = req?.user || {};
+
+  res.json({ user: { fullName, role } });
 };

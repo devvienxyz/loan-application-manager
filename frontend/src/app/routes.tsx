@@ -3,28 +3,31 @@ import { useAuthStore } from "@/features/auth/store";
 import LoanApplicationDetails from "@/features/loan-application/pages/details";
 import LoanApplications from "@/features/loan-application/pages/list";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import NotFound from "@/app/pages/not-found";
 
 function PublicRoute() {
 	const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-	return !isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+	return !isAuthenticated ? <Outlet /> : <Navigate to="/loans" replace />;
 }
 
 function ProtectedRoute() {
 	const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-	return isAuthenticated ? <Outlet /> : <Navigate to="/auth" replace />;
+	return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
 }
 
 export default function AppRoutes() {
 	return (
 		<Routes>
 			<Route element={<PublicRoute />}>
-				<Route path="/auth" element={<AuthLanding />} />
+				<Route path="/" element={<AuthLanding />} />
 			</Route>
 
 			<Route element={<ProtectedRoute />}>
-				<Route path="/" element={<LoanApplications />} />
-				<Route path="/loan/:id" element={<LoanApplicationDetails />} />
+				<Route path="/loans" element={<LoanApplications />} />
+				<Route path="/loans/:id" element={<LoanApplicationDetails />} />
 			</Route>
+
+      <Route path="*" element={<NotFound />} />
 		</Routes>
 	);
 }
