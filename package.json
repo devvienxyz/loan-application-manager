@@ -2,7 +2,8 @@
 	"scripts": {
 		"start:dev": "bash scripts/run.sh",
 		"format-check-staged": "bash ./scripts/format.sh format_check_staged",
-		"format-fix-staged": "bash ./scripts/format.sh format_fix_staged"
+		"format-fix-staged": "bash ./scripts/format.sh format_fix_staged",
+    "test": "npm run test --workspaces"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
