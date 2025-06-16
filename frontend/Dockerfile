@@ -1,28 +1,22 @@
-# Stage 1: Build
-FROM node:22.15.0-alpine AS builder
-
-WORKDIR /repo
-
-# Copy entire monorepo for workspace context
+# Base image
+FROM node:22.15.0-alpine AS base
+WORKDIR /app
 COPY . .
-
-# Install all dependencies from the monorepo root
 RUN npm install
 
-# Build only the frontend app
+# Production build
+FROM base AS build
 RUN npm run --workspace=frontend build
 
-# Stage 2: Serve built frontend
-FROM node:22.15.0-alpine
+# Dev container
+FROM base AS dev
+WORKDIR /app/frontend
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
 
+# Production static server
+FROM base AS prod
 WORKDIR /app
-
-# Copy static build
-COPY --from=builder /repo/frontend/dist ./dist
-COPY --from=builder /repo/frontend/package*.json ./
-COPY --from=builder /repo/node_modules ./node_modules
-
-# Optional: You could serve with serve or any static server
 RUN npm install -g serve
-
+COPY --from=build /app/frontend/dist ./dist
+EXPOSE 5173
 CMD ["serve", "-s", "dist", "-l", "5173"]
