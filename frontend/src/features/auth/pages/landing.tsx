@@ -1,9 +1,9 @@
 import RegisterForm from "@/features/auth/components/register-form";
-import SignInForm, { type SignInFormData } from "@/features/auth/components/signin-form";
+import SignInForm from "@/features/auth/components/signin-form";
 import { useLogin, useRegister } from "@/features/auth/hooks/useAuth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { RegisterFormData } from "../types";
+import { LoginFormData, RegisterFormData } from "@loan-app-mgr/shared/types/auth";
 
 type AuthMode = "signin" | "register";
 
@@ -14,7 +14,7 @@ export default function AuthLanding() {
 	const loginMutation = useLogin();
 	const registerMutation = useRegister();
 
-	const handleSignIn = (data: SignInFormData) => {
+	const handleSignIn = (data: LoginFormData) => {
 		loginMutation.mutate(data, {
 			onSuccess: () => navigate("/"),
 			onError: (err: unknown) => console.error(err),

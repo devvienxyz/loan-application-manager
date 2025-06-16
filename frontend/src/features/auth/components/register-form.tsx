@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RegisterFormData } from "../types";
+import { RegisterFormData } from "@loan-app-mgr/shared/types/auth";
 
 type Props = {
 	onSubmit: (data: RegisterFormData) => void;

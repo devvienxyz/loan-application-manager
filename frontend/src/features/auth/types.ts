@@ -1,6 +1,0 @@
-
-export type RegisterFormData = {
-	fullName: string;
-	email: string;
-	password: string;
-};

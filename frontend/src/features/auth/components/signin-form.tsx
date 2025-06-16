@@ -1,12 +1,8 @@
 import { useState } from "react";
-
-export type SignInFormData = {
-	email: string;
-	password: string;
-};
+import { LoginFormData } from "@loan-app-mgr/shared/types/auth";
 
 type Props = {
-	onSubmit: (data: SignInFormData) => void;
+	onSubmit: (data: LoginFormData) => void;
 };
 
 export default function SignInForm({ onSubmit }: Props) {
