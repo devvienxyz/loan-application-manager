@@ -1,18 +1,12 @@
 import { useState } from "react";
-
-export type RegisterFormData = {
-	firstName: string;
-	lastName: string;
-	email: string;
-	password: string;
-};
+import { RegisterFormData } from "../types";
 
 type Props = {
 	onSubmit: (data: RegisterFormData) => void;
 };
 
 export default function RegisterForm({ onSubmit }: Props) {
-	const [form, setForm] = useState({ firstName: "", lastName: "", email: "", password: "" });
+	const [form, setForm] = useState<RegisterFormData>({ fullName: "", email: "", password: "" });
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -27,18 +21,10 @@ export default function RegisterForm({ onSubmit }: Props) {
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
 			<input
-				name="firstName"
-				value={form.firstName}
+				name="fullName"
+				value={form.fullName}
 				onChange={handleChange}
-				placeholder="First Name"
-				className="input"
-				required
-			/>
-			<input
-				name="lastName"
-				value={form.lastName}
-				onChange={handleChange}
-				placeholder="Last Name"
+				placeholder="Full Name"
 				className="input"
 				required
 			/>

@@ -1,8 +1,9 @@
-import RegisterForm, { type RegisterFormData } from "@/features/auth/components/register-form";
+import RegisterForm from "@/features/auth/components/register-form";
 import SignInForm, { type SignInFormData } from "@/features/auth/components/signin-form";
 import { useLogin, useRegister } from "@/features/auth/hooks/useAuth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { RegisterFormData } from "../types";
 
 type AuthMode = "signin" | "register";
 

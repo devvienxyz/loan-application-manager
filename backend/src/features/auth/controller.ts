@@ -18,7 +18,11 @@ const buildPayload = (user: User) => ({
 type SignupHandler = RequestHandler<unknown, unknown, SignupRequestBody>;
 export const signup: SignupHandler = async (req, res) => {
 	const { fullName, email, password } = req.body;
-	if (!email || !password || !fullName) res.status(400).json({ message: "Missing fields" });
+
+  if (!email || !password || !fullName) {
+    res.status(400).json({ message: "Missing fields" });
+    return;
+  }
 
 	try {
 		const user = await createUser(fullName, email, password);
@@ -26,6 +30,7 @@ export const signup: SignupHandler = async (req, res) => {
 
 		setAuthCookies(res, signAccessToken(payload), signRefreshToken(payload));
 		res.status(201).json({ message: "User registered" });
+    // this will auto login the user
 	} catch (err: unknown) {
 		if (err instanceof Error) {
 			res.status(400).json({ message: err.message || "Signup failed" });
@@ -62,7 +67,10 @@ export const login: LoginHandler = async (req, res) => {
 export const refresh: RequestHandler = (req, res) => {
 	const token = req.signedCookies?.refresh_token;
 
-	if (!token) res.sendStatus(401);
+	if (!token) {
+    res.sendStatus(401);
+    return;
+  }
 
 	try {
 		const payload = verifyRefreshToken(token);
