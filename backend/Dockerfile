@@ -11,6 +11,7 @@ RUN npm run --workspace=backend build
 # Dev container
 FROM base AS dev
 WORKDIR /app/backend
+RUN npx prisma generate
 CMD ["npm", "--workspace", "backend", "run", "dev"]
 
 # Production runtime
