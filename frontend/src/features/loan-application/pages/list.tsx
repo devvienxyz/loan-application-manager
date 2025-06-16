@@ -1,16 +1,16 @@
-import { useLoanAppStore } from "../store";
+import { useLoans } from "../hooks/useLoans";
 
 export default function LoanApplications() {
-	const selectedStatus = useLoanAppStore((s) => s.selectedStatus);
-	const setSelectedStatus = useLoanAppStore((s) => s.setSelectedStatus);
+	const { data, isLoading, isError } = useLoans();
+
+	if (isLoading) return <div>Loading...</div>;
+	if (isError) return <div>Failed to fetch loan applications.</div>;
 
 	return (
 		<div>
-			<h1>Loan Applications</h1>
-			<p>Selected Status: {selectedStatus}</p>
-			<button type="button" onClick={() => setSelectedStatus("Approved")}>
-				Set Approved
-			</button>
+			{data.map((loan) => (
+				<div key={loan.id}>{loan.name}</div>
+			))}
 		</div>
 	);
 }

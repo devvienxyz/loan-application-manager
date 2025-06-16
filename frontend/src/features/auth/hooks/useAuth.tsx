@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { login, register } from "../service";
+import { login, register, getMe, logout as logoutApi } from "../service";
 import { useAuthStore } from "../store";
 
 export function useLogin() {
@@ -7,7 +7,14 @@ export function useLogin() {
 
 	return useMutation({
 		mutationFn: login,
-		onSuccess: () => loginStore(),
+		onSuccess: async () => {
+			try {
+				await getMe();
+				loginStore();
+			} catch {
+				// handle error (cookies not set, etc)
+			}
+		},
 	});
 }
 
@@ -16,6 +23,22 @@ export function useRegister() {
 
 	return useMutation({
 		mutationFn: register,
-		onSuccess: () => loginStore(),
+		onSuccess: async () => {
+			try {
+				const {data: getMeData} = await getMe();
+        console.log(getMeData)
+				loginStore();
+			} catch {}
+		},
+	});
+}
+
+
+export function useLogout() {
+	const logoutStore = useAuthStore((s) => s.logout);
+
+	return useMutation({
+		mutationFn: logoutApi,
+		onSuccess: () => logoutStore(),
 	});
 }

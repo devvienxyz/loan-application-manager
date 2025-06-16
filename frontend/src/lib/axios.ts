@@ -1,4 +1,5 @@
-import axios, { type AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError } from "axios";
+import { useAuthStore } from "@/features/auth/store";
 
 const api = axios.create({
 	baseURL: "/api",
@@ -6,65 +7,34 @@ const api = axios.create({
 	headers: { "Content-Type": "application/json" },
 });
 
-let isRefreshing = false;
-let failedQueue: {
-	resolve: (value: AxiosResponse) => void;
-	reject: (error: AxiosError) => void;
-	config: InternalAxiosRequestConfig;
-}[] = [];
-
-const processQueue = (error: AxiosError | null, response?: AxiosResponse) => {
-	for (const { resolve, reject } of failedQueue) {
-		if (error) {
-			reject(error);
-		} else if (response) {
-			resolve(response);
-		}
-	}
-	failedQueue = [];
-};
-
 api.interceptors.response.use(
 	(res) => res,
-	(error: AxiosError) => {
-		const originalRequest = error.config as InternalAxiosRequestConfig & {
-			_retry?: boolean;
-		};
+	async (err) => {
+		const originalRequest = err.config;
 
-		if (error.response?.status === 401 && !originalRequest._retry) {
+		if (
+			err.response?.status === 401 &&
+			!originalRequest._retry &&
+			!originalRequest.url.includes("/auth/refresh")
+		) {
 			originalRequest._retry = true;
 
-			if (isRefreshing) {
-				return new Promise<AxiosResponse>((resolve, reject) => {
-					failedQueue.push({ resolve, reject, config: originalRequest });
-				});
-			}
-
-			isRefreshing = true;
-
-			return new Promise<AxiosResponse>((resolve, reject) => {
-				api
-					.post("/auth/refresh")
-					.then((refreshRes) => {
-						processQueue(null, refreshRes);
-						return api(originalRequest);
-					})
-					.then((retryResponse) => {
-						resolve(retryResponse);
-					})
-					.catch((refreshError) => {
-						processQueue(refreshError as AxiosError);
-						window.location.href = "/auth";
-						reject(refreshError);
-					})
-					.finally(() => {
-						isRefreshing = false;
+			try {
+				await axios.post("/api/auth/refresh", null, { withCredentials: true });
+				return api(originalRequest);
+			} catch (refreshErr) {
+				if ((refreshErr as AxiosError).response?.status === 401) {
+					Promise.resolve().then(() => {
+						useAuthStore.getState().logout(); // clean logout
+						window.location.href = "/auth";   // optional redirect
 					});
-			});
+				}
+				return Promise.reject(refreshErr);
+			}
 		}
 
-		return Promise.reject(error);
-	},
+		return Promise.reject(err);
+	}
 );
 
 export default api;

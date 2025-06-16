@@ -9,6 +9,7 @@ export interface AuthTokenPayload {
 	role?: string;
 	iat?: number;
 	exp?: number;
+  fullName?: string;
 }
 
 export interface RegisterInput extends AuthCredentials {
@@ -24,6 +25,7 @@ export interface User {
 	id: string;
 	email: string;
 	role: string;
+  fullName: string;
 }
 
 export type RegisterFormData = {
@@ -31,5 +33,10 @@ export type RegisterFormData = {
 	email: string;
 	password: string;
 };
+
+export type GetMeData = {
+  fullName: string;
+  role: string;
+}
 
 export type LoginFormData = { email: string; password: string };

@@ -10,7 +10,7 @@ export const validateUser = async (email: string, password: string): Promise<Use
 	const isMatch = await bcrypt.compare(password, user.password);
 	if (!isMatch) return null;
 
-	return { id: user.id, email: user.email, role: user.role as "admin" | "user" };
+	return { id: user.id, email: user.email, role: user.role as "admin" | "user", fullName: user.fullName };
 };
 
 export const createUser = async (
@@ -29,5 +29,5 @@ export const createUser = async (
 		role: "user",
 	});
 
-	return { id: newUser.id, email: newUser.email, role: newUser.role };
+	return { id: newUser.id, email: newUser.email, role: newUser.role, fullName: newUser.fullName };
 };
