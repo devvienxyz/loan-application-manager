@@ -1,4 +1,4 @@
-import type { User } from "@loan-app-mgr/shared/types/auth";
+import type { GetMeData, User } from "@loan-app-mgr/shared/types/auth";
 import type { Request, RequestHandler, Response } from "express";
 import { createUser, validateUser } from "./service";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "./tokens";
@@ -9,6 +9,7 @@ const buildPayload = (user: User) => ({
 	userId: user.id,
 	email: user.email,
 	role: user.role,
+  fullName: user.fullName,
 });
 
 //
@@ -87,5 +88,9 @@ export const logout = (_req: Request, res: Response) => {
 };
 
 export const getMe = (req: Request, res: Response) => {
-	res.json({ user: req.user });
+  const responseData: GetMeData = {
+    fullName: req?.user?.fullName || req?.user?.email || "Guest",
+    role: req.user?.role || "user",
+  }
+	res.json(responseData);
 };
