@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { type AxiosError } from "axios";
 import RegisterForm from "@/features/auth/components/register-form";
 import { useLogin, useRegister } from "@/features/auth/hooks/useAuth";
 import { LoginFormData, RegisterFormData } from "@loan-app-mgr/shared/types/auth";
@@ -14,7 +12,6 @@ export default function AuthLanding() {
   const [mode, setMode] = useState<AuthMode>("login");
   const isLogin = mode === "login";
 
-  const navigate = useNavigate();
   const loginMutation = useLogin();
   const registerMutation = useRegister();
   const { getMutationOptions } = useFormMutationHandler()
