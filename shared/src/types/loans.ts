@@ -9,3 +9,11 @@ export const LoanApplicationStatus = {
 } as const;
 
 export type LoanApplicationStatus = (typeof LoanApplicationStatus)[keyof typeof LoanApplicationStatus];
+
+export type LoanApplication = {
+	id: string;
+	name: string;
+	status: LoanApplicationStatus;
+	amount: number;
+	createdAt: string;
+};

@@ -1,5 +1,18 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  roots: ["<rootDir>/src"],
+  setupFiles: ["<rootDir>/jest.setup.js"],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "^@loan-app-mgr/shared/(.*)$": "<rootDir>/../shared/src/$1"
+  },
+  transform: {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  globals: {
+    "ts-jest": {
+      tsconfig: "<rootDir>/tsconfig.json", // Point to the backend's tsconfig
+    },
+  },
+  moduleDirectories: ["node_modules", "<rootDir>/node_modules", "<rootDir>/../shared/node_modules"],
 };

@@ -20,6 +20,18 @@ services:
       timeout: 5s
       retries: 10
 
+  shared:
+    build:
+      context: .
+      dockerfile: shared/Dockerfile
+      target: dev
+    container_name: loan_shared
+    volumes:
+      - ./shared:/app/shared
+    working_dir: /app/shared
+    networks:
+      - loan-net
+
   backend:
     build:
       context: .
@@ -32,10 +44,12 @@ services:
       - .env
     volumes:
       - ./backend:/app/backend
+      - ./shared:/app/shared
       # - ./node_modules:/repo/node_modules
     working_dir: /app
     depends_on:
       - database
+      - shared
     networks:
       - loan-net
 
@@ -49,6 +63,7 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app/frontend
+      - ./shared:/app/shared
       - ./node_modules:/repo/node_modules
     working_dir: /app
     depends_on:
