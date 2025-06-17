@@ -1,40 +1,33 @@
 import { useAuthStore } from "@/features/auth/store";
-import { LoanApplication } from "@loan-app-mgr/shared/types/loans";
 import { useState } from "react";
 import TableRow from "./table-row";
+import useLoanAppStore from "../store";
+import TablePagination from "./table-pagination";
 
-type Props = {
-  data: LoanApplication[];
-}
-
-export default function LoanApplicationsTable({ data }: Props) {
-  const { user } = useAuthStore((s) => s);
-  const isAdmin = user?.role === "admin";
+export default function LoanApplicationsTable() {
   const [searchTerm, setSearchTerm] = useState("");
+  const { user } = useAuthStore((s) => s);
+  const { loanList, total, page, pageSize, setPage, setSearch, search } = useLoanAppStore((s) => (s));
+
+  const isAdmin = user?.role === "admin";
+  const totalPages = Math.ceil(total / pageSize);
+
+  const handleSearch = () => setSearch(searchTerm);
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      filterData();
-    }
-  };
-
-  const filterData = () => {
-    // TODO: filtering logic
+    if (e.key === "Enter") handleSearch();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e?.target.value ?? "")
+    setSearchTerm(e?.target.value ?? "");
   }
-
-  // todo: on key up
-  // todo: on enter
 
   return (
     <>
       <div className="w-full flex justify-between items-center mb-3 mt-1 pl-3">
         <div>
           <h3 className="text-lg font-semibold text-slate-800">Loan Applications</h3>
-          <p className="text-slate-500">Overview of {isAdmin ? "all" : "your personal"} loans.</p>
+          <p className="text-slate-500 text-sm">Overview of {isAdmin ? "all" : "your personal"} loans.</p>
         </div>
         <div className="ml-3">
           <div className="w-full max-w-sm min-w-[200px] relative">
@@ -49,7 +42,7 @@ export default function LoanApplicationsTable({ data }: Props) {
                 className="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white rounded"
                 type="button"
                 title="Search"
-                onClick={filterData}
+                onClick={handleSearch}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" className="w-8 h-8 text-slate-600">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -92,11 +85,11 @@ export default function LoanApplicationsTable({ data }: Props) {
             </tr>
           </thead>
           <tbody>
-            {data?.map((loan) => (
+            {loanList?.map((loan) => (
               <TableRow rowData={loan} key={`loan-${loan.id}`} />
             ))}
 
-            {!data?.length && (
+            {!loanList?.length && (
               <tr>
                 <td colSpan={5} className="py-4 text-center text-sm">No records to display</td>
               </tr>
@@ -104,28 +97,9 @@ export default function LoanApplicationsTable({ data }: Props) {
           </tbody>
         </table>
 
-        <div className="flex justify-between items-center px-4 py-3">
-          <div className="text-sm text-slate-500">
-            Showing <b>1-5</b> of 45
-          </div>
-          <div className="flex space-x-1">
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-              Prev
-            </button>
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease">
-              1
-            </button>
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-              2
-            </button>
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-              3
-            </button>
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-              Next
-            </button>
-          </div>
-        </div>
+        {!!loanList?.length && (
+          <TablePagination page={page} pageSize={pageSize} total={total} setPage={setPage} totalPages={totalPages} />
+        )}
       </div>
     </>
   )

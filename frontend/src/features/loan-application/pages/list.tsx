@@ -3,7 +3,7 @@ import LoanApplicationsTable from "../components/table";
 import { useLoans } from "../hooks/useLoans";
 
 export default function LoanApplications() {
-  const { data, isLoading, isError } = useLoans();
+  const { isLoading, isError } = useLoans();
   const { user } = useAuthStore((s) => s);
 
   if (isLoading) return <div>Loading...</div>;
@@ -16,7 +16,7 @@ export default function LoanApplications() {
       </div>
 
       <div className="w-full">
-        <LoanApplicationsTable data={data} />
+        <LoanApplicationsTable />
       </div>
     </div>
   );
