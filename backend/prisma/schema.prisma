@@ -4,8 +4,6 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-
-
 // generator client {
 //  provider = "prisma-client-js"
 //  output   = "../generated/prisma"
@@ -22,9 +20,22 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  fullName String
-  email    String @unique
-  password String
-  role     String
+  id              String            @id @default(cuid())
+  fullName        String
+  email           String            @unique
+  password        String
+  role            String
+  LoanApplication LoanApplication[]
+}
+
+model LoanApplication {
+  id        String   @id @default(uuid())
+  name      String
+  amount    Float
+  status    String // You can use enum if needed
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
