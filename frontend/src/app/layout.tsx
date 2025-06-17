@@ -2,23 +2,21 @@ import { useLogout } from "@/features/auth/hooks/useAuth";
 import { useAuthStore } from "@/features/auth/store";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const {isAuthenticated, user} = useAuthStore((s) => s);
+  const { isAuthenticated, user } = useAuthStore((s) => s);
   const { mutate: logout } = useLogout();
 
-  console.log(isAuthenticated, user)
-
-	return <div className="bg-primary-bg min-h-screen">
-    <nav className="">
+  return (
+    <div className="bg-primary min-h-screen">
       {isAuthenticated && (
-        <>
-        <div>Hello, {user?.fullName || "Guest"}</div>
-        <button className="" type="button" onClick={() => logout()}>Logout</button>
-        </>
+        <nav className="flex justify-between w-full py-4 px-6">
+          <div>Hello, {user?.fullName || "Guest"} 👋</div>
+          <button className="" type="button" onClick={() => logout()}>Logout</button>
+        </nav>
       )}
-    </nav>
 
-    <div className="">
-      {children}
+      <div className="">
+        {children}
+      </div>
     </div>
-    </div>;
+  );
 }
