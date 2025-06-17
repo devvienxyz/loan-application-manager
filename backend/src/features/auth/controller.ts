@@ -2,7 +2,7 @@ import type { User } from "@loan-app-mgr/shared/types/auth";
 import type { Request, RequestHandler, Response } from "express";
 import { createUser, validateUser } from "./service";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "./tokens";
-import type { AuthenticatedRequest, LoginRequestBody, SignupRequestBody } from "./types";
+import type { LoginRequestBody, SignupRequestBody } from "./types";
 import { formatUserResponse, setAuthCookies } from "./utils";
 
 //
@@ -77,8 +77,8 @@ export const logout = (_req: Request, res: Response) => {
 	res.clearCookie("access_token").clearCookie("refresh_token").sendStatus(204);
 };
 
-export const getMe = (req: AuthenticatedRequest, res: Response) => {
-  const { fullName, role } = req?.user || {};
+// export const getMe = (req: AuthenticatedRequest, res: Response) => {
+//   const { fullName, role } = req?.user || {};
 
-  res.json({ user: { fullName, role } });
-};
+//   res.json({ user: { fullName, role } });
+// };
