@@ -49,8 +49,11 @@ case "$1" in
   logs-db)
     docker compose -f "$COMPOSE_FILE" logs -f database
     ;;
-  bash)
+  bash-be)
     docker compose -f "$COMPOSE_FILE" exec backend sh
+    ;;
+  bash-fe)
+    docker compose -f "$COMPOSE_FILE" exec frontend sh
     ;;
   rebuild)
     [ -z "$2" ] && { echo "Usage: $0 rebuild <service>"; exit 1; }
@@ -61,7 +64,7 @@ case "$1" in
     logs_service "$2"
     ;;
   *)
-    echo "Usage: $0 {up|up-build|down|nuke|stop|ps|logs-all|logs-be|logs-fe|logs-db|bash|rebuild <service>|logs <service>}"
+    echo "Usage: $0 {up|up-build|down|nuke|stop|ps|logs-all|logs-be|logs-fe|logs-db|bash-be|bash-fe|rebuild <service>|logs <service>}"
     exit 1
     ;;
 esac

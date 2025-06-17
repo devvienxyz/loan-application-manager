@@ -1,0 +1,60 @@
+import { FormCancelButton, FormSubmitButton } from "@/app/components/forms/buttons";
+import { BaseInput, BaseInputGroup } from "@/app/components/forms/inputs";
+import { MAXIMUM_LOAN, MINIMUM_LOAN } from "@loan-app-mgr/shared/constants/loans";
+import { useState } from "react";
+
+export default function LoanForm({ onClose }: { onClose: () => void }) {
+  const [form, setForm] = useState({ name: "", amount: "" });
+  const [errors, setErrors] = useState<{ name?: string; amount?: string }>({});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const validate = () => {
+    const errs: typeof errors = {};
+    if (!Number(form.amount) || isNaN(Number(form.amount))) errs.amount = "Amount must be a number";
+    return errs;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) {
+      setErrors(errs);
+      return;
+    }
+    // submit logic here (API call, state update, etc.)
+    console.log("Submitting loan:", form);
+    onClose();
+  };
+
+  return (
+    <>
+      <h2 className="text-xl font-semibold mb-6">Apply for a New Loan</h2>
+
+      <form onSubmit={handleSubmit} className="space-y-4 w-full">
+        <BaseInputGroup errorMsg={errors.amount}>
+          <BaseInput
+            name="amount"
+            type="number"
+            placeholder="Loan amount"
+            min={MINIMUM_LOAN}
+            max={MAXIMUM_LOAN}
+            onChange={handleChange} />
+        </BaseInputGroup>
+
+        {/* action btns */}
+
+        <div className="flex justify-end gap-2">
+          <div className="w-full max-w-[80px]">
+            <FormCancelButton label="Cancel" onClick={onClose} />
+          </div>
+          <div className="w-full max-w-[80px]">
+            <FormSubmitButton label="Submit" />
+          </div>
+        </div>
+      </form>
+    </>
+  );
+}

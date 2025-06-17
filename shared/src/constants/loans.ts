@@ -1,0 +1,7 @@
+const MINIMUM_LOAN = 1000;
+const MAXIMUM_LOAN = 100000;
+
+export {
+  MINIMUM_LOAN,
+  MAXIMUM_LOAN,
+}
