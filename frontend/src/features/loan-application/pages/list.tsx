@@ -22,11 +22,9 @@ export default function LoanApplications() {
         <div className="w-full">
           <LoanApplicationsTable />
 
-          {!applyForLoan && (
-            <button type="button" className="mt-4 px-4 py-2 bg-blue-600 text-sm text-white rounded hover:bg-blue-700" onClick={() => setApplyForLoan(true)}>
-              Apply for a new loan
-            </button>
-          )}
+          <button type="button" className="mt-4 px-4 py-2 bg-blue-600 text-sm text-white rounded hover:bg-blue-700" onClick={() => setApplyForLoan(true)}>
+            Apply for a new loan
+          </button>
         </div>
       </div>
 

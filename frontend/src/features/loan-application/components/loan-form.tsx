@@ -2,10 +2,13 @@ import { FormCancelButton, FormSubmitButton } from "@/app/components/forms/butto
 import { BaseInput, BaseInputGroup } from "@/app/components/forms/inputs";
 import { MAXIMUM_LOAN, MINIMUM_LOAN } from "@loan-app-mgr/shared/constants/loans";
 import { useState } from "react";
+import { useCreateLoan } from "../hooks/useLoans";
 
 export default function LoanForm({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({ name: "", amount: "" });
   const [errors, setErrors] = useState<{ name?: string; amount?: string }>({});
+
+  const { mutate, isLoading } = useCreateLoan();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -20,12 +23,16 @@ export default function LoanForm({ onClose }: { onClose: () => void }) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
+
     if (Object.keys(errs).length) {
       setErrors(errs);
       return;
     }
-    // submit logic here (API call, state update, etc.)
-    console.log("Submitting loan:", form);
+
+    mutate(
+      { amount: Number(form.amount) },
+      { onSuccess: () => onClose() }
+    );
     onClose();
   };
 
@@ -48,10 +55,10 @@ export default function LoanForm({ onClose }: { onClose: () => void }) {
 
         <div className="flex justify-end gap-2">
           <div className="w-full max-w-[80px]">
-            <FormCancelButton label="Cancel" onClick={onClose} />
+            <FormCancelButton label="Cancel" onClick={onClose} disabled={isLoading} />
           </div>
           <div className="w-full max-w-[80px]">
-            <FormSubmitButton label="Submit" />
+            <FormSubmitButton label="Submit" disabled={isLoading} />
           </div>
         </div>
       </form>

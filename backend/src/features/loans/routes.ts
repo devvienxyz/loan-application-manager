@@ -1,9 +1,9 @@
 import { Router } from "express";
 import {
-	applyForLoan,
-	getLoanDetails,
-	updateLoan,
-	deleteLoan,
+  applyForLoan,
+  getLoanDetails,
+  updateLoan,
+  deleteLoan,
   getAllUserLoans,
 } from "@/features/loans/controller";
 import { authenticate } from "@/features/auth/middleware";

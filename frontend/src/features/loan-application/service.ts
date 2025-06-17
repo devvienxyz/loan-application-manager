@@ -13,3 +13,8 @@ export const fetchLoans = async ({ queryKey }: QueryFunctionContext) => {
   const res = await api.get(`/loans?${params.toString()}`);
   return res.data; // should return { loans: LoanApplication[]; total: number }
 };
+
+export const createLoan = async (data: { amount: number }) => {
+  const res = await api.post("/loans/apply", data);
+  return res.data;
+};
