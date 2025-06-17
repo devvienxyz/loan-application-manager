@@ -4,8 +4,14 @@ import { LoanService } from "./service";
 export const getAllUserLoans = async (req: Request, res: Response) => {
   const userId = req.user?.id;
   const isAdmin = req.user?.role === "admin";
-  const loans = await LoanService.getAllLoans(userId, isAdmin);
-  res.json(loans);
+
+  const page = parseInt(req.query.page as string) || 1;
+  const pageSize = parseInt(req.query.pageSize as string) || 10;
+  const search = (req.query.search as string) || "";
+
+  const result = await LoanService.getAllLoans({ userId, isAdmin, page, pageSize, search });
+
+  res.json(result); // { loans, total }
 };
 
 export const applyForLoan = async (req: Request, res: Response) => {

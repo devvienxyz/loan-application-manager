@@ -1,12 +1,8 @@
 import api from "@/lib/axios";
+import { QueryFunctionContext } from "@tanstack/react-query";
 
-// export const getLoans = async () => {
-//   const res = await api.get("/loans");
-//   return res.data;
-// };
-
-export const fetchLoans = async ({ queryKey }: { queryKey: any }) => {
-  const [_key, { page, pageSize, search }] = queryKey;
+export const fetchLoans = async ({ queryKey }: QueryFunctionContext) => {
+  const [_key, { page, pageSize, search }] = queryKey as [string, { page: number; pageSize: number; search: string }];
 
   const params = new URLSearchParams({
     page: String(page),
@@ -15,5 +11,5 @@ export const fetchLoans = async ({ queryKey }: { queryKey: any }) => {
   });
 
   const res = await api.get(`/loans?${params.toString()}`);
-  return res.data;
+  return res.data; // should return { loans: LoanApplication[]; total: number }
 };

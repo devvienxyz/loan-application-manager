@@ -1,8 +1,21 @@
 import { LoanRepository } from "./repository";
 
 export const LoanService = {
-  getAllLoans: async (userId: string, isAdmin: boolean) =>
-    LoanRepository.getAll(userId, isAdmin),
+  getAllLoans: async ({
+    userId,
+    isAdmin,
+    page,
+    pageSize,
+    search,
+  }: {
+    userId: string;
+    isAdmin: boolean;
+    page: number;
+    pageSize: number;
+    search: string;
+  }) => {
+    return LoanRepository.getAll({ userId, isAdmin, page, pageSize, search });
+  },
 
   getLoanById: async (loanId: string) =>
     LoanRepository.getById(loanId),

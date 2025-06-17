@@ -8,10 +8,10 @@ interface LoansData {
   total: number;
 }
 
-export const useLoans = (): { data: LoansData | null; isLoading: boolean; } => {
+export const useLoans = () => {
   const { page, pageSize, search } = useLoanAppStore();
 
-  return useQuery({
+  return useQuery<LoansData>({
     queryKey: ["loans", { page, pageSize, search }],
     queryFn: fetchLoans,
     staleTime: 1000 * 60 * 5, // 5 mins cache
