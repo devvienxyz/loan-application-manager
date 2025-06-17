@@ -6,6 +6,7 @@ import { useLogin, useRegister } from "@/features/auth/hooks/useAuth";
 import { LoginFormData, RegisterFormData } from "@loan-app-mgr/shared/types/auth";
 import { ErrorDispatch } from "@/app/types";
 import LoginForm from "@/features/auth/components/login-form";
+import { useFormMutationHandler } from "@/app/hooks/useMutationHandler";
 
 type AuthMode = "login" | "register";
 
@@ -16,28 +17,17 @@ export default function AuthLanding() {
   const navigate = useNavigate();
   const loginMutation = useLogin();
   const registerMutation = useRegister();
+  const { getMutationOptions } = useFormMutationHandler()
 
   const handleLogin = (data: LoginFormData, setErrorMsg: ErrorDispatch) => {
     loginMutation.mutate(data, {
-      onSuccess: () => navigate("/"),
-      onError: (err: unknown) => {
-        console.error(err)
-        const reqErr = (err as AxiosError<{ message?: string }>).response?.data;
-        const errMsg = reqErr?.message ?? "Something went wrong. Please try again.";
-        setErrorMsg(errMsg);
-      }
+      ...getMutationOptions(setErrorMsg)
     });
   };
 
   const handleRegister = (data: RegisterFormData, setErrorMsg: ErrorDispatch) => {
     registerMutation.mutate(data, {
-      onSuccess: () => navigate("/"),
-      onError: (err: unknown) => {
-        console.error(err)
-        const reqErr = (err as AxiosError<{ message?: string }>).response?.data;
-        const errMsg = reqErr?.message ?? "Something went wrong. Please try again.";
-        setErrorMsg(errMsg);
-      }
+      ...getMutationOptions(setErrorMsg)
     });
   };
 
