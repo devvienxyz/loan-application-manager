@@ -7,11 +7,11 @@ const queryClient = new QueryClient();
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
-	createRoot(rootElement).render(
-		<QueryClientProvider client={queryClient}>
-			<App />
-		</QueryClientProvider>,
-	);
+  createRoot(rootElement).render(
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>,
+  );
 } else {
-	console.error("Root element not found");
+  // console.error("Root element not found");
 }
