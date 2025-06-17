@@ -25,7 +25,10 @@ case "$1" in
   up-build)
     docker compose -f "$COMPOSE_FILE" up --build -d
     ;;
-  down)
+  down) # preserves databse in pgdata volume, so it is kept intact across rebuilds
+    docker compose -f "$COMPOSE_FILE" down --remove-orphans
+    ;;
+  nuke) # nuke everything, destroy all
     docker compose -f "$COMPOSE_FILE" down -v --remove-orphans
     ;;
   stop)
@@ -58,7 +61,7 @@ case "$1" in
     logs_service "$2"
     ;;
   *)
-    echo "Usage: $0 {up|up-build|down|stop|ps|logs-all|logs-be|logs-fe|logs-db|bash|rebuild <service>|logs <service>}"
+    echo "Usage: $0 {up|up-build|down|nuke|stop|ps|logs-all|logs-be|logs-fe|logs-db|bash|rebuild <service>|logs <service>}"
     exit 1
     ;;
 esac
