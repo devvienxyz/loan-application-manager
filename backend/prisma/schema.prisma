@@ -34,11 +34,21 @@ enum LoanPurpose {
   OTHERS
 }
 
+enum LoanStatus {
+  DRAFT
+  SUBMITTED
+  PENDING
+  APPROVED
+  REJECTED
+  DISBURSED
+  CANCELLED
+}
+
 model LoanApplication {
   id        String      @id @default(uuid())
   purpose   LoanPurpose
   amount    Float
-  status    String
+  status    LoanStatus
   createdAt DateTime    @default(now())
   userId    String
   user      User        @relation(fields: [userId], references: [id])
