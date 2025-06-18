@@ -1,44 +1,26 @@
-import { useAuthStore } from "@/features/auth/store";
-import LoanApplicationsTable from "../components/table/table";
-import { useLoans } from "../hooks/useLoans";
 import { useState } from "react";
+import { useAuthStore } from "@/features/auth/store";
+import { useLoans } from "../hooks/useLoans";
+import LoanApplicationsTable from "../components/table/table";
 import LoanApplyForm from "../components/forms/apply-form";
 import LoanEditForm from "../components/forms/edit-form";
 import LoanDetails from "../components/details/details";
 
+type Mode =
+  | { type: "apply" }
+  | { type: "view"; loanId: string }
+  | { type: "edit"; loanId: string }
+  | null;
+
 export default function LoanApplications() {
   const { isLoading, isError } = useLoans();
   const { user } = useAuthStore((s) => s);
-  const [applyForLoan, setApplyForLoan] = useState(false);
-  const [selectedLoan, setSelectedLoan] = useState<string | null>(null)
-  const [loanToModify, setLoanToModify] = useState<string | null>(null)
+  const [mode, setMode] = useState<Mode>(null);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Failed to fetch loan applications.</div>;
 
-  const handleCloseFormWrapper = () => {
-    setApplyForLoan(false)
-    setSelectedLoan(null)
-    setLoanToModify(null)
-  }
-
-  const handleApplyForLoan = () => {
-    setApplyForLoan(true)
-    setSelectedLoan(null)
-    setLoanToModify(null)
-  }
-
-  const handleView = (loanId: string) => {
-    setApplyForLoan(false)
-    setSelectedLoan(loanId)
-    setLoanToModify(null)
-  }
-
-  const handleEdit = (loanId: string) => {
-    setApplyForLoan(false)
-    setSelectedLoan(null)
-    setLoanToModify(loanId)
-  }
+  const handleClose = () => setMode(null);
 
   return (
     <>
@@ -49,30 +31,26 @@ export default function LoanApplications() {
 
         <div className="w-full">
           <LoanApplicationsTable
-            handleView={handleView}
-            handleEdit={handleEdit}
+            handleView={(loanId) => setMode({ type: "view", loanId })}
+            handleEdit={(loanId) => setMode({ type: "edit", loanId })}
           />
 
           <button
             type="button"
             className="mt-4 px-4 py-2 bg-blue-600 text-sm text-white rounded hover:bg-blue-700"
-            onClick={handleApplyForLoan}
+            onClick={() => setMode({ type: "apply" })}
           >
             Apply for a new loan
           </button>
         </div>
       </div>
 
-      {!!(applyForLoan || selectedLoan || loanToModify) && (
+      {mode && (
         <div className="fixed inset-0 bg-blue-900/40 z-100 flex justify-start">
-          <div className="bg-white p-6 rounded-t-sm shadow-lg w-full flex flex-col md:1/2 lg:w-1/5">
-            {selectedLoan ? (
-              <LoanDetails onClose={handleCloseFormWrapper} loanId={selectedLoan} />
-            ) : loanToModify ? (
-              <LoanEditForm onClose={handleCloseFormWrapper} loanId={loanToModify} />
-            ) : (
-              <LoanApplyForm onClose={handleCloseFormWrapper} />
-            )}
+          <div className="bg-white p-6 shadow-lg w-full flex flex-col md:w-1/2 lg:w-1/5">
+            {mode.type === "apply" && <LoanApplyForm onClose={handleClose} />}
+            {mode.type === "view" && <LoanDetails loanId={mode.loanId} onClose={handleClose} />}
+            {mode.type === "edit" && <LoanEditForm loanId={mode.loanId} onClose={handleClose} />}
           </div>
         </div>
       )}

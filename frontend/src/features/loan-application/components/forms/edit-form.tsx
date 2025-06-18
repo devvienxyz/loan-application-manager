@@ -5,6 +5,7 @@ import { BaseInput, BaseInputGroup } from "@/app/components/forms/inputs";
 import { FormCancelButton, FormSubmitButton } from "@/app/components/forms/buttons";
 import { LOAN_PURPOSE_OPTIONS, MAXIMUM_LOAN, MINIMUM_LOAN } from "@loan-app-mgr/shared/constants/loans";
 import PurposeSelect from "../table/purpose-select";
+import { LoanPurposeKey } from "@loan-app-mgr/shared/types/loans";
 
 type Props = {
   loanId: string;
@@ -78,10 +79,11 @@ export default function LoanEditForm({ loanId, onClose }: Props) {
 
         <BaseInputGroup label="Purpose" errorMsg={errors.purpose}>
           <PurposeSelect
-            selected={form.purpose}
+            selected={form.purpose as LoanPurposeKey}
             label="Select Loan Purpose"
             onChange={handlePurposeSelect}
             options={LOAN_PURPOSE_OPTIONS}
+            defaultValue={form.purpose}
             required
             disabled={isLoading}
           />
