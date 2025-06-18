@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
-import { LoanStatuses, UpdateLoanPayload } from "@loan-app-mgr/shared/types/loans";
+import { LoanPurposes, LoanStatuses, UpdateLoanPayload } from "@loan-app-mgr/shared/types/loans";
 
 export const LoanRepository = {
   getAll: async ({
@@ -16,24 +16,31 @@ export const LoanRepository = {
     pageSize: number;
     search: string;
   }) => {
+    const normalizedSearch = search?.trim().toLowerCase();
+
+    // Match enums manually with partial search
+    const statusMatch = Object.values(LoanStatuses).find(
+      (s) => s.toLowerCase().includes(normalizedSearch)
+    );
+
+    const purposeMatch = Object.values(LoanPurposes).find(
+      (p) => p.toLowerCase().includes(normalizedSearch)
+    );
+
     const where: Prisma.LoanApplicationWhereInput = {
       ...(isAdmin ? {} : { userId }),
-      ...(search
+      ...(normalizedSearch
         ? {
           OR: [
+            { purpose: purposeMatch, },
+            { status: statusMatch, },
             {
-              purpose: {
-                contains: search,
-                mode: Prisma.QueryMode.insensitive,
+              id: {
+                contains: normalizedSearch,
+                mode: "insensitive",
               },
             },
-            {
-              status: {
-                contains: search,
-                mode: Prisma.QueryMode.insensitive,
-              },
-            },
-          ],
+          ].filter(Boolean), // Remove falsy conditions
         }
         : {}),
     };
@@ -62,7 +69,7 @@ export const LoanRepository = {
     prisma.loanApplication.create({
       data: {
         ...data,
-        status: LoanStatuses.DRAFT as string,
+        status: LoanStatuses.DRAFT,
       },
     }),
 
