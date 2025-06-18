@@ -2,7 +2,7 @@ export default function CopyButton({ text }: { text: string }) {
   const handleCopy = () => {
     navigator.clipboard.writeText(text)
       .then(() => {
-        console.log("Text copied to clipboard:", text);
+        // console.log("Text copied to clipboard:", text);
       })
       .catch((err) => {
         console.error("Failed to copy text:", err);

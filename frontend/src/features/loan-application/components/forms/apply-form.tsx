@@ -17,7 +17,6 @@ export default function LoanApplyForm({ onClose }: { onClose: () => void }) {
   };
 
   const handlePurposeSelect = (value: LoanPurpose) => {
-    console.log("Selected purpose:", value);
     setForm({ ...form, purpose: value });
     // setErrors({ ...errors, purpose: undefined });
   };

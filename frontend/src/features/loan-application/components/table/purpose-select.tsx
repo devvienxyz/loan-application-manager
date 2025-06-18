@@ -15,8 +15,6 @@ type Props = {
 export default function PurposeSelect({ selected, onChange, defaultValue, options }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log("PurposeSelect rendered with selected:", selected, "defaultValue:", defaultValue, "options:", options);
-  console.log(LoanPurposes[selected])
   return (
     <div className="">
       <div className="relative mt-2">
