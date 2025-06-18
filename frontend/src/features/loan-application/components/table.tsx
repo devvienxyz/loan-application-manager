@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/features/auth/store";
 import { useState } from "react";
 import useLoanAppStore from "../store";
-import { useLoans } from "../hooks/useLoans"; // adjust path as needed
+import { useLoans } from "../hooks/useLoans";
 import TableRow from "./table-row";
 import TablePagination from "./table-pagination";
 
