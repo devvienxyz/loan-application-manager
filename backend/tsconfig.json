@@ -7,8 +7,11 @@
       "@/*": ["backend/src/*"],
       "@loan-app-mgr/shared/*": ["../shared/src/*"]
     },
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true
 	},
-	"include": ["src", "../shared/src"],
+	"include": ["src", "../shared/src", "scripts"],
 	"exclude": ["dist", "../node_modules"],
   "references": [
     { "path": "../shared" }

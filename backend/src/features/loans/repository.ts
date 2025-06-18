@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
-import { LoanApplicationStatus } from "@loan-app-mgr/shared/types/loans";
+import { LoanStatuses, UpdateLoanPayload } from "@loan-app-mgr/shared/types/loans";
 
 export const LoanRepository = {
   getAll: async ({
@@ -62,11 +62,11 @@ export const LoanRepository = {
     prisma.loanApplication.create({
       data: {
         ...data,
-        status: LoanApplicationStatus.Draft,
+        status: LoanStatuses.DRAFT as string,
       },
     }),
 
-  update: async (id: string, data: Partial<{ purpose: string; amount: number; status: string }>) =>
+  update: async (id: string, data: UpdateLoanPayload) =>
     prisma.loanApplication.update({
       where: { id },
       data,

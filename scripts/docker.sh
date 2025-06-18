@@ -50,10 +50,10 @@ case "$1" in
     docker compose -f "$COMPOSE_FILE" logs -f database
     ;;
   bash-be)
-    docker compose -f "$COMPOSE_FILE" exec backend sh
+    docker compose -f "$COMPOSE_FILE" exec -it backend sh
     ;;
   bash-fe)
-    docker compose -f "$COMPOSE_FILE" exec frontend sh
+    docker compose -f "$COMPOSE_FILE" exec -it frontend sh
     ;;
   rebuild)
     [ -z "$2" ] && { echo "Usage: $0 rebuild <service>"; exit 1; }

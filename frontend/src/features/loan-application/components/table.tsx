@@ -5,13 +5,18 @@ import { useLoans } from "../hooks/useLoans";
 import TableRow from "./table-row";
 import TablePagination from "./table-pagination";
 
-export default function LoanApplicationsTable() {
+type Props = {
+  setSelectedLoan: React.Dispatch<React.SetStateAction<string | null>>
+}
+
+export default function LoanApplicationsTable({ setSelectedLoan }: Props) {
   const { user } = useAuthStore();
-  const isAdmin = user?.role === "admin";
+  const isAdmin = user?.role && user.role.toLowerCase() === "admin";
 
   const { page, pageSize, search, setPage, setSearch } = useLoanAppStore();
-  const [searchTerm, setSearchTerm] = useState(search);
   const { data, isLoading } = useLoans();
+
+  const [searchTerm, setSearchTerm] = useState(search);
 
   const handleSearch = () => {
     setSearch(searchTerm);
@@ -85,6 +90,11 @@ export default function LoanApplicationsTable() {
                   Date Created
                 </p>
               </th>
+              {isAdmin && (
+                <th className="p-4 border-b border-slate-200 bg-slate-50">
+                </th>
+              )}
+
             </tr>
           </thead>
 
@@ -92,7 +102,9 @@ export default function LoanApplicationsTable() {
             {isLoading ? (
               <tr><td colSpan={5} className="text-center py-4 text-sm">Loading...</td></tr>
             ) : loanList.length ? (
-              loanList.map((loan) => <TableRow rowData={loan} key={loan.id} />)
+              loanList.map((loan) => (
+                <TableRow rowData={loan} key={loan.id} onClick={setSelectedLoan} />
+              ))
             ) : (
               <tr><td colSpan={5} className="text-center py-4 text-sm">No records found</td></tr>
             )}

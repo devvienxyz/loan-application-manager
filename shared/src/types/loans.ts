@@ -1,22 +1,11 @@
-// export const LoanApplicationStatus = {
-//   Draft: "DRAFT",
-//   Submitted: "SUBMITTED",
-//   Pending: "PENDING",
-//   Approved: "APPROVED",
-//   Rejected: "REJECTED",
-//   Disbursed: "DISBURSED",
-//   Cancelled: "CANCELLED",
-// } as const;
-
-
 export const LoanStatuses = {
-  DRAFT: "Draft",
-  SUBMITTED: "Submitted",
-  PENDING: "Pending",
-  APPROVED: "Approved",
-  REJECTED: "Rejected",
-  DISBURSED: "Disbursed",
-  CANCELLED: "Cancelled",
+  DRAFT: "DRAFT",
+  SUBMITTED: "SUBMITTED",
+  PENDING: "PENDING",
+  APPROVED: "APPROVED",
+  REJECTED: "REJECTED",
+  DISBURSED: "DISBURSED",
+  CANCELLED: "CANCELLED",
 } as const;
 export type LoanStatus = (typeof LoanStatuses)[keyof typeof LoanStatuses];
 export type LoanStatusKey = keyof typeof LoanStatuses;
@@ -30,27 +19,24 @@ export type LoanApplication = {
 };
 
 export const LoanPurposes = {
-  HOME_IMPROVEMENT: "Home Improvement",
-  PERSONAL: "Personal",
-  OTHERS: "Others",
-  // EDUCATION: "Education",
-  // MEDICAL: "Medical",
-  // BUSINESS: "Business",
+  HOME_IMPROVEMENT: "HOME_IMPROVEMENT",
+  PERSONAL: "PERSONAL",
+  OTHERS: "OTHERS",
 } as const;
 export type LoanPurpose = (typeof LoanPurposes)[keyof typeof LoanPurposes];
 export type LoanPurposeKey = keyof typeof LoanPurposes;
 export type LoanPurposeLabel = (typeof LoanPurposes)[LoanPurposeKey];
-export type LoanOption = {
-  value: LoanPurposeKey;
-  label: LoanPurposeLabel;
-};
+
+
+/*
+ * Payload types
+ */
 
 export type CreateLoanPayload = {
   purpose: string; amount: number;
 };
-
-export type UpdateLoanPayload = {
+export type UpdateLoanPayload = Partial<{
   purpose?: string;
   status?: LoanStatus;
   amount?: number;
-};
+}>;
