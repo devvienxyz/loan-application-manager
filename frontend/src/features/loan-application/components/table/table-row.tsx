@@ -17,21 +17,21 @@ export default function TableRow({ rowData, onSelect, onEdit, onDelete }: Props)
   const { user } = useAuthStore();
 
   return (
-    <tr className="hover:bg-slate-50 border-b border-slate-200" onClick={() => onSelect(id)}>
-      <td className="p-4 py-5 flex items-center gap-2">
+    <tr className="hover:bg-slate-50 border-b border-slate-200">
+      <td className="p-4 py-5 flex items-center gap-2" onClick={() => onSelect(id)}>
         <p className="w-[80px] truncate block font-semibold text-sm text-slate-800">{id}</p>
         <CopyButton text={id} />
       </td>
-      <td className="p-4 py-5">
+      <td className="p-4 py-5" onClick={() => onSelect(id)}>
         <p className="text-sm text-slate-500">{LOAN_PURPOSE_LABELS[purpose as LoanPurposeKey]}</p>
       </td>
-      <td className="p-4 py-5">
+      <td className="p-4 py-5" onClick={() => onSelect(id)}>
         <p className="text-sm text-slate-500">$ {figureFormatter(amount)}</p>
       </td>
-      <td className="p-4 py-5">
+      <td className="p-4 py-5" onClick={() => onSelect(id)}>
         <p className="text-sm text-slate-500">{LOAN_STATUS_LABELS[status as LoanStatusKey]}</p>
       </td>
-      <td className="p-4 py-5">
+      <td className="p-4 py-5" onClick={() => onSelect(id)}>
         <p className="text-sm text-slate-500">{monDateYearFormatter(createdAt)}</p>
       </td>
       {user?.role && user.role.toLowerCase() === "admin" && (

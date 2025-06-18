@@ -6,10 +6,11 @@ import TableRow from "./table-row";
 import TablePagination from "./table-pagination";
 
 type Props = {
-  setSelectedLoan: React.Dispatch<React.SetStateAction<string | null>>
+  handleView: (loanId: string) => void;
+  handleEdit: (loanId: string) => void;
 }
 
-export default function LoanApplicationsTable({ setSelectedLoan }: Props) {
+export default function LoanApplicationsTable({ handleView, handleEdit }: Props) {
   const { user } = useAuthStore();
   const isAdmin = user?.role && user.role.toLowerCase() === "admin";
 
@@ -113,8 +114,8 @@ export default function LoanApplicationsTable({ setSelectedLoan }: Props) {
                 <TableRow
                   key={loan.id}
                   rowData={loan}
-                  onSelect={setSelectedLoan}
-                  onEdit={setSelectedLoan}
+                  onSelect={handleView}
+                  onEdit={handleEdit}
                   onDelete={handleDelete}
                 />
               ))

@@ -57,7 +57,7 @@ export default function LoanDetails({ loanId, onClose }: Props) {
     <div className="flex flex-col gap-4 w-full">
       <h2 className="text-xl font-semibold mb-4">Loan Details</h2>
 
-      <div className="space-y-2 text-sm flex flex-col gap-6">
+      <div className="space-y-2 text-sm flex flex-col gap-4">
         <DetailItem label={`Loan Id`} value={loanId} />
         <DetailItem label={`Amount`} value={`$ ${figureFormatter(loan.amount)}`} />
         <DetailItem label={`Purpose`} value={LOAN_PURPOSE_LABELS[loan.purpose as LoanPurposeKey]} />
