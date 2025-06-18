@@ -28,14 +28,20 @@ model User {
   LoanApplication LoanApplication[]
 }
 
+enum LoanPurpose {
+  HOME_IMPROVEMENT
+  PERSONAL
+  OTHERS
+}
+
 model LoanApplication {
-  id        String   @id @default(uuid())
-  name      String
+  id        String      @id @default(uuid())
+  purpose   LoanPurpose
   amount    Float
-  status    String // You can use enum if needed
-  createdAt DateTime @default(now())
+  status    String
+  createdAt DateTime    @default(now())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
