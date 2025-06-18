@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/features/auth/store";
 import { useState } from "react";
 import useLoanAppStore from "../store";
-import { useLoans } from "../hooks/useLoans";
+import { useDeleteLoan, useLoans } from "../hooks/useLoans";
 import TableRow from "./table-row";
 import TablePagination from "./table-pagination";
 
@@ -17,11 +17,18 @@ export default function LoanApplicationsTable({ setSelectedLoan }: Props) {
   const { data, isLoading } = useLoans();
 
   const [searchTerm, setSearchTerm] = useState(search);
+  const { mutate: removeLoan } = useDeleteLoan();
 
   const handleSearch = () => {
     setSearch(searchTerm);
     setPage(1); // Reset to first page on new search
   };
+
+  const handleDelete = (id: string) => {
+    if (confirm("Are you sure you want to delete this loan?")) {
+      removeLoan(id);
+    }
+  }
 
   const total = data?.total ?? 0;
   const loanList = data?.loans ?? [];
@@ -103,7 +110,13 @@ export default function LoanApplicationsTable({ setSelectedLoan }: Props) {
               <tr><td colSpan={5} className="text-center py-4 text-sm">Loading...</td></tr>
             ) : loanList.length ? (
               loanList.map((loan) => (
-                <TableRow rowData={loan} key={loan.id} onClick={setSelectedLoan} />
+                <TableRow
+                  key={loan.id}
+                  rowData={loan}
+                  onSelect={setSelectedLoan}
+                  onEdit={setSelectedLoan}
+                  onDelete={handleDelete}
+                />
               ))
             ) : (
               <tr><td colSpan={5} className="text-center py-4 text-sm">No records found</td></tr>

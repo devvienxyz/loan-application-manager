@@ -1,8 +1,8 @@
-import { LoanPurposes, LoanStatuses } from "../types/loans.js";
+import { LoanPurpose, LoanPurposes, LoanStatuses } from "../types/loans.js";
 
 const MINIMUM_LOAN = 1000;
 const MAXIMUM_LOAN = 100000;
-const LOAN_PURPOSE_OPTIONS = [
+const LOAN_PURPOSE_OPTIONS: { value: LoanPurpose; label: string }[] = [
   { value: "HOME_IMPROVEMENT", label: "Home Improvement" },
   { value: "PERSONAL", label: "Personal" },
   { value: "OTHERS", label: "Others" },

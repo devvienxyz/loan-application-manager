@@ -24,3 +24,8 @@ export const updateLoan = async (loanId: string, data: Partial<CreateLoanPayload
   const res = await api.patch(`/loans/${loanId}`, data);
   return res.data;
 };
+
+export const deleteLoan = async (loanId: string) => {
+  const res = await api.delete(`/loans/${loanId}`);
+  return res.data;
+};

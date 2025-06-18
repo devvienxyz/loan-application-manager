@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createLoan, fetchLoans } from "../service";
+import { createLoan, deleteLoan, fetchLoans } from "../service";
 import useLoanAppStore from "../store";
 import { LoanApplication } from "@loan-app-mgr/shared/types/loans";
 
@@ -27,6 +27,16 @@ export const useCreateLoan = () => {
     mutationFn: createLoan,
     onSuccess: () => {
       // refresh loan list
+      queryClient.invalidateQueries({ queryKey: ["loans"] });
+    },
+  });
+};
+
+export const useDeleteLoan = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteLoan,
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["loans"] });
     },
   });

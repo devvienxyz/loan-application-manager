@@ -36,8 +36,8 @@ export default function TableRow({ rowData, onSelect, onEdit, onDelete }: Props)
       </td>
       {user?.role && user.role.toLowerCase() === "admin" && (
         <td className="p-4 py-5 flex gap-6">
-          <button type="button" className="text-sm font-bold" onClick={() => onEdit(id)}>Edit</button>
-          <button type="button" className="text-sm font-bold" onClick={() => onDelete(id)}>Delete</button>
+          <button type="button" className="text-sm font-bold hover:text-red-900 hover:underline" onClick={() => onEdit(id)}>Edit</button>
+          <button type="button" className="text-sm font-bold hover:text-red-900 hover:underline" onClick={() => onDelete(id)}>Delete</button>
         </td>
       )}
     </tr>

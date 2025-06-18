@@ -27,7 +27,7 @@ export default function LoanApplications() {
             Apply for a new loan
           </button>
         </div>
-    </div>
+      </div>
 
       {applyForLoan && !selectedLoan && (
         <div className="fixed inset-0 bg-blue-900/40 z-100 flex justify-start">
