@@ -21,12 +21,13 @@ export const BasePasswordInput = (props: BaseInputProps) => (
 )
 
 type BaseInputGroupProps = {
+  label: string;
   errorMsg?: string;
 }
-
-export const BaseInputGroup: React.FC<React.PropsWithChildren<BaseInputGroupProps>> = ({ errorMsg, children }) => (
-  <div className="w-full flex flex-col gap-3">
-    <div className="w-full md:max-w-1/2">{children}</div>
+export const BaseInputGroup: React.FC<React.PropsWithChildren<BaseInputGroupProps>> = ({ label, errorMsg, children }) => (
+  <div className="w-full flex flex-col gap-1">
+    <p className="text-sm font-bold">{label}</p>
+    <div className="w-full">{children}</div>
     {errorMsg && <p className="text-red-600 text-xs">{errorMsg}</p>}
   </div>
 )

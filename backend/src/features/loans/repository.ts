@@ -22,7 +22,7 @@ export const LoanRepository = {
         ? {
           OR: [
             {
-              name: {
+              purpose: {
                 contains: search,
                 mode: Prisma.QueryMode.insensitive,
               },
@@ -55,7 +55,7 @@ export const LoanRepository = {
     prisma.loanApplication.findUnique({ where: { id } }),
 
   create: async (data: {
-    name: string;
+    purpose: string;
     amount: number;
     userId: string;
   }) =>
@@ -66,7 +66,7 @@ export const LoanRepository = {
       },
     }),
 
-  update: async (id: string, data: Partial<{ name: string; amount: number; status: string }>) =>
+  update: async (id: string, data: Partial<{ purpose: string; amount: number; status: string }>) =>
     prisma.loanApplication.update({
       where: { id },
       data,

@@ -29,8 +29,8 @@ export default function LoanApplications() {
       </div>
 
       {applyForLoan && (
-        <div className="fixed inset-0 bg-blue-900/40 z-100 flex items-end justify-center">
-          <div className="bg-white p-6 rounded-t-sm shadow-lg w-full sm:w-2/3 lg:w-1/2 xl:w-1/3">
+        <div className="fixed inset-0 bg-blue-900/40 z-100 flex justify-start">
+          <div className="bg-white p-6 rounded-t-sm shadow-lg w-full flex flex-col md:1/2 lg:w-1/5">
             <LoanForm onClose={() => setApplyForLoan(false)} />
           </div>
         </div>

@@ -1,25 +1,27 @@
-import { LoanApplication } from "@loan-app-mgr/shared/types/loans"
+import CopyButton from "@/app/components/display/copy-button";
+import { LoanApplication, LoanPurposeKey, LoanPurposes, LoanStatuses, LoanStatusKey } from "@loan-app-mgr/shared/types/loans"
 
 type Props = {
   rowData: LoanApplication
 }
 
 export default function TableRow({ rowData }: Props) {
-  const { id, name, status, amount, createdAt } = rowData;
+  const { id, purpose, status, amount, createdAt } = rowData;
 
   return (
     <tr className="hover:bg-slate-50 border-b border-slate-200">
-      <td className="p-4 py-5">
-        <p className="block font-semibold text-sm text-slate-800">{id}</p>
+      <td className="p-4 py-5 flex items-center gap-2 max-w-1/2">
+        <p className="block truncate block font-semibold text-sm text-slate-800">{id}</p>
+        <CopyButton text={id} />
       </td>
       <td className="p-4 py-5">
-        <p className="text-sm text-slate-500">{name}</p>
+        <p className="text-sm text-slate-500">{LoanPurposes[purpose as LoanPurposeKey]}</p>
       </td>
       <td className="p-4 py-5">
-        <p className="text-sm text-slate-500">${amount}</p>
+        <p className="text-sm text-slate-500">$ {amount}</p>
       </td>
       <td className="p-4 py-5">
-        <p className="text-sm text-slate-500">{status}</p>
+        <p className="text-sm text-slate-500">{LoanStatuses[status as LoanStatusKey]}</p>
       </td>
       <td className="p-4 py-5">
         <p className="text-sm text-slate-500">{createdAt}</p>

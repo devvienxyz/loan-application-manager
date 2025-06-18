@@ -20,10 +20,10 @@ export const LoanService = {
   getLoanById: async (loanId: string) =>
     LoanRepository.getById(loanId),
 
-  applyForLoan: async (userId: string, payload: { name: string; amount: number }) =>
+  applyForLoan: async (userId: string, payload: { purpose: string; amount: number }) =>
     LoanRepository.create({ ...payload, userId }),
 
-  updateLoan: async (loanId: string, updates: Partial<{ name: string; amount: number; status: string }>) =>
+  updateLoan: async (loanId: string, updates: Partial<{ purpose: string; amount: number; status: string }>) =>
     LoanRepository.update(loanId, updates),
 
   deleteLoan: async (loanId: string) =>

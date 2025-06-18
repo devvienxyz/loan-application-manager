@@ -16,8 +16,8 @@ export const getAllUserLoans = async (req: Request, res: Response) => {
 
 export const applyForLoan = async (req: Request, res: Response) => {
   const userId = req.user?.id;
-  const { name, amount } = req.body;
-  const loan = await LoanService.applyForLoan(userId, { name, amount });
+  const { purpose, amount } = req.body;
+  const loan = await LoanService.applyForLoan(userId, { purpose, amount });
   res.status(201).json(loan);
 };
 
