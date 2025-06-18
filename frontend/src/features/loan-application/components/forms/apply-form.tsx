@@ -2,11 +2,11 @@ import { FormCancelButton, FormSubmitButton } from "@/app/components/forms/butto
 import { BaseInput, BaseInputGroup } from "@/app/components/forms/inputs";
 import { LOAN_PURPOSE_OPTIONS, MAXIMUM_LOAN, MINIMUM_LOAN } from "@loan-app-mgr/shared/constants/loans";
 import { useState } from "react";
-import { useCreateLoan } from "../hooks/useLoans";
-import PurposeSelect from "./purpose-select";
+import { useCreateLoan } from "../../hooks/useLoans";
+import PurposeSelect from "../table/purpose-select";
 import { LoanPurpose } from "@loan-app-mgr/shared/types/loans";
 
-export default function LoanForm({ onClose }: { onClose: () => void }) {
+export default function LoanApplyForm({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({ purpose: LOAN_PURPOSE_OPTIONS[0].value, amount: "" });
   const [errors, setErrors] = useState<{ purpose?: LoanPurpose; amount?: string }>({});
 

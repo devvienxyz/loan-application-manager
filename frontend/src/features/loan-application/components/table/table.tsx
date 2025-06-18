@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/features/auth/store";
 import { useState } from "react";
-import useLoanAppStore from "../store";
-import { useDeleteLoan, useLoans } from "../hooks/useLoans";
+import useLoanAppStore from "../../store";
+import { useDeleteLoan, useLoans } from "../../hooks/useLoans";
 import TableRow from "./table-row";
 import TablePagination from "./table-pagination";
 
@@ -39,7 +39,7 @@ export default function LoanApplicationsTable({ setSelectedLoan }: Props) {
       <div className="flex justify-between items-center mb-3 mt-1 pl-3">
         <div>
           <h3 className="text-lg font-semibold text-slate-800">Loan Applications</h3>
-          <p className="text-slate-500 text-sm">Overview of {isAdmin ? "all" : "your personal"} loans.</p>
+          <p className="text-slate-500 text-sm">Overview of {isAdmin ? "all" : "your recorded"} loans.</p>
         </div>
 
         <div className="ml-3">
