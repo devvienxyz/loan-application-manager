@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { LoanService } from "./service";
+import { LoanService } from "./service.ts";
 
 export const getAllUserLoans = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || "";
   const isAdmin = req.user?.role === "admin";
 
   const page = parseInt(req.query.page as string) || 1;
@@ -15,7 +15,7 @@ export const getAllUserLoans = async (req: Request, res: Response) => {
 };
 
 export const applyForLoan = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.id || "";
   const { purpose, amount } = req.body;
   const loan = await LoanService.applyForLoan(userId, { purpose, amount });
   res.status(201).json(loan);

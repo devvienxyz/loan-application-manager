@@ -1,6 +1,6 @@
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/prisma.ts";
 import { Prisma } from "@prisma/client";
-import { LoanPurposes, LoanStatuses, UpdateLoanPayload } from "@loan-app-mgr/shared/types/loans";
+import { LoanPurposes, LoanPurpose, LoanStatuses, UpdateLoanPayload, LoanStatus } from "@loan-app-mgr/shared/types/loans";
 
 export const LoanRepository = {
   getAll: async ({
@@ -37,7 +37,7 @@ export const LoanRepository = {
             {
               id: {
                 contains: normalizedSearch,
-                mode: "insensitive",
+                mode: Prisma.QueryMode.insensitive,
               },
             },
           ].filter(Boolean), // Remove falsy conditions
@@ -69,6 +69,7 @@ export const LoanRepository = {
     prisma.loanApplication.create({
       data: {
         ...data,
+        purpose: data.purpose as LoanPurpose, // Ensure purpose is of type LoanPurposes
         status: LoanStatuses.DRAFT,
       },
     }),
@@ -76,7 +77,11 @@ export const LoanRepository = {
   update: async (id: string, data: UpdateLoanPayload) =>
     prisma.loanApplication.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        purpose: data.purpose as LoanPurpose, // Ensure purpose is of type LoanPurpose
+        status: data.status as LoanStatus, // Ensure status is of type LoanStatuses
+      },
     }),
 
   delete: async (id: string) =>
