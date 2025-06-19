@@ -52,7 +52,7 @@ export const authenticate = (
 
 export function authorizeAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   if (req.user?.role && req.user?.role.toLowerCase() !== "admin") {
-    res.status(403).json({ message: "Not enough permissions." });
+    res.status(403).json({ message: "Forbidden request." });
     return;
   }
   next();
