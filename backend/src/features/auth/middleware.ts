@@ -4,27 +4,27 @@ import { verifyAccessToken } from "./tokens";
 import { normalizeTokenPayloadToUser } from "./utils";
 
 export const requireAuth = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
-	if (!req.user) {
-		res.sendStatus(401);
-		return;
-	}
-	next();
+  if (!req.user) {
+    res.sendStatus(401);
+    return;
+  }
+  next();
 };
 
 export const decodeAccessToken = (
-	req: AuthenticatedRequest,
-	res: Response,
-	next: NextFunction,
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
 ): void => {
-	const token = req.signedCookies?.access_token;
+  const token = req.signedCookies?.access_token;
 
   if (!token) return next();
-	try {
-		req.user = verifyAccessToken(token);
-	} catch {
-	}
+  try {
+    req.user = verifyAccessToken(token);
+  } catch {
+  }
 
-	next();
+  next();
 };
 
 
@@ -48,4 +48,12 @@ export const authenticate = (
     res.sendStatus(401);
     return;
   }
+}
+
+export function authorizeAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  if (req.user?.role && req.user?.role.toLowerCase() !== "admin") {
+    res.status(403).json({ message: "Not enough permissions." });
+    return;
+  }
+  next();
 }
