@@ -1,15 +1,7 @@
 import type { NextFunction, Response } from "express";
-import type { AuthenticatedRequest } from "./types";
-import { verifyAccessToken } from "./tokens";
-import { normalizeTokenPayloadToUser } from "./utils";
-
-export const requireAuth = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
-  if (!req.user) {
-    res.sendStatus(401);
-    return;
-  }
-  next();
-};
+import type { AuthenticatedRequest } from "./types.ts";
+import { verifyAccessToken } from "./tokens.ts";
+import { normalizeTokenPayloadToUser } from "./utils.ts";
 
 export const decodeAccessToken = (
   req: AuthenticatedRequest,

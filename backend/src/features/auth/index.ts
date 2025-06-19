@@ -1,2 +1,1 @@
-export { default as authRoutes } from "./routes";
-export { requireAuth } from "./middleware";
+export { default as authRoutes } from "./routes.ts";
