@@ -1,13 +1,13 @@
 import cookieParser from "cookie-parser";
 import express from "express";
-import { config } from "./config";
-import authRoutes from "./features/auth/routes";
-import healthRoutes from "./features/health/routes";
-import loansRoutes from "./features/loans/routes";
-import { errorHandlerMiddleware } from "./middlewares";
-import { decodeAccessToken } from "./features/auth/middleware";
-import { requestLoggerMiddleware } from "./middlewares/logger";
+import authRoutes from "./features/auth/routes.ts";
+import healthRoutes from "./features/health/routes.ts";
+import loansRoutes from "./features/loans/routes.ts";
+import { errorHandlerMiddleware, requestLoggerMiddleware } from "./middlewares/index.ts";
+import { decodeAccessToken } from "./features/auth/middleware.ts";
+import { getConfig } from "./config.ts";
 
+const config = getConfig()
 const app = express();
 
 app.use(express.json()); // parsing json req bodies
