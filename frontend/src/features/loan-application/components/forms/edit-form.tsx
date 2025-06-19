@@ -1,10 +1,7 @@
-import { useAuthStore } from "@/features/auth/store";
 import { useEffect, useState } from "react";
-import { LoanPurpose } from "@prisma/client";
 import { BaseInput, BaseInputGroup } from "@/app/components/forms/inputs";
 import { FormCancelButton, FormSubmitButton } from "@/app/components/forms/buttons";
 import { LOAN_PURPOSE_OPTIONS, LOAN_STATUS_OPTIONS, MAXIMUM_LOAN, MINIMUM_LOAN } from "@loan-app-mgr/shared/constants/loans";
-import PurposeSelect from "../table/purpose-select";
 import { LoanPurposeKey, LoanStatusKey } from "@loan-app-mgr/shared/types/loans";
 import { useGetLoanById, useUpdateLoan } from "../../hooks/useLoans";
 import SelectDropdown from "@/app/components/forms/select";
@@ -60,7 +57,7 @@ export default function LoanEditForm({ loanId, onClose }: Props) {
       {
         amount: Number(form.amount),
         purpose: form.purpose,
-        status: form.status,
+        status: (form.status as LoanStatusKey),
       },
       {
         onSuccess: onClose,
