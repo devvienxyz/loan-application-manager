@@ -1,4 +1,4 @@
-import { LoanRepository } from "./repository";
+import { LoanRepository } from "./repository.ts";
 
 export const LoanService = {
   getAllLoans: async ({

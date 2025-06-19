@@ -1,16 +1,22 @@
 {
-	"scripts": {
-		"start:dev": "bash scripts/run.sh",
-		"format-check-staged": "bash ./scripts/format.sh format_check_staged",
-		"format-fix-staged": "bash ./scripts/format.sh format_fix_staged",
-    "test": "npm run test --workspaces"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"eslint": "^9.28.0",
-		"husky": "^9.1.7",
-		"typescript": "^5.8.3",
-		"typescript-eslint": "^8.34.0"
-	},
-	"workspaces": ["frontend", "backend", "shared"]
+  "scripts": {
+    "start:dev": "bash scripts/run.sh",
+    "format-check-staged": "bash ./scripts/format.sh format_check_staged",
+    "format-fix-staged": "bash ./scripts/format.sh format_fix_staged",
+    "test": "npm run test --workspaces",
+    "test:backend": "npm run test --workspace=backend",
+    "test:frontend": "npm run test --workspace=frontend"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "eslint": "^9.28.0",
+    "husky": "^9.1.7",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.0"
+  },
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ]
 }
