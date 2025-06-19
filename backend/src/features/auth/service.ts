@@ -22,7 +22,7 @@ export const createUser = async (
   if (existing) throw new Error("Email already in use");
 
   const hashed = await bcrypt.hash(password, 12);
-  const newUser = await UserRepository.create({
+const newUser = await UserRepository.create({
     fullName,
     email,
     password: hashed,
