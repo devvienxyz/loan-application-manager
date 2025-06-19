@@ -60,14 +60,13 @@ Frontend: <http://localhost:5173>
 
 PostgreSQL: port 5432
 
-Prisma Studio (optional): npx prisma studio --schema=backend/prisma/schema.prisma
-
 ## 🛠 Development
 
 Migrations
 
 ```bash
-npm run --workspace=backend prisma:migrate
+./scripts/docker.sh bash
+cd backend && npm prisma:migrate
 ```
 
 Seed Database
@@ -87,25 +86,14 @@ npm run format-fix-staged
 
 Configure secrets via .env files:
 
-backend/.env
-
-frontend/.env
-
-database/.env (optional for Prisma)
-
 Root .env for global secrets
 
-## ✅ Production Checklist
+## Testing
 
-- Set up CI/CD pipeline
-
-- Secure .env via secrets manager
-
-- Use --omit=dev for production Docker image
-
-- Enable HTTPS via reverse proxy (e.g., NGINX + Certbot)
-
-- Harden PostgreSQL with user & network permissions
+```bash
+# run on root dir
+npm run test
+```
 
 ## 🤝 License
 

@@ -4,3 +4,5 @@ node_modules
 dist
 *.tsbuildinfo
 /generated/prisma
+coverage
+.env.test

@@ -11,8 +11,12 @@ module.exports = {
   },
   globals: {
     "ts-jest": {
-      tsconfig: "<rootDir>/tsconfig.json", // Point to the backend's tsconfig
+      tsconfig: "<rootDir>/tsconfig.json", // Point to the backend"s tsconfig
     },
   },
   moduleDirectories: ["node_modules", "<rootDir>/node_modules", "<rootDir>/../shared/node_modules"],
+  projects: [
+    "<rootDir>/jest.unit.config.cjs",
+    "<rootDir>/jest.integration.config.cjs"
+  ],
 };
