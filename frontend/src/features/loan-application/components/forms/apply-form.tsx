@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useCreateLoan } from "../../hooks/useLoans";
 import PurposeSelect from "../table/purpose-select";
 import { LoanPurpose } from "@loan-app-mgr/shared/types/loans";
+import SelectDropdown from "@/app/components/forms/select";
 
 export default function LoanApplyForm({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({ purpose: LOAN_PURPOSE_OPTIONS[0].value, amount: "" });
@@ -59,9 +60,9 @@ export default function LoanApplyForm({ onClose }: { onClose: () => void }) {
         </BaseInputGroup>
 
         <BaseInputGroup label="Purpose" errorMsg={errors.purpose}>
-          <PurposeSelect
+          <SelectDropdown
             selected={form.purpose}
-            label="Select Loan Purpose"
+            label="Loan Purpose"
             onChange={handlePurposeSelect}
             options={LOAN_PURPOSE_OPTIONS}
             defaultValue={LOAN_PURPOSE_OPTIONS[0].label}

@@ -3,48 +3,51 @@ import { useEffect, useState } from "react";
 import { LoanPurpose } from "@prisma/client";
 import { BaseInput, BaseInputGroup } from "@/app/components/forms/inputs";
 import { FormCancelButton, FormSubmitButton } from "@/app/components/forms/buttons";
-import { LOAN_PURPOSE_OPTIONS, MAXIMUM_LOAN, MINIMUM_LOAN } from "@loan-app-mgr/shared/constants/loans";
+import { LOAN_PURPOSE_OPTIONS, LOAN_STATUS_OPTIONS, MAXIMUM_LOAN, MINIMUM_LOAN } from "@loan-app-mgr/shared/constants/loans";
 import PurposeSelect from "../table/purpose-select";
-import { LoanPurposeKey } from "@loan-app-mgr/shared/types/loans";
+import { LoanPurposeKey, LoanStatusKey } from "@loan-app-mgr/shared/types/loans";
+import { useGetLoanById, useUpdateLoan } from "../../hooks/useLoans";
+import SelectDropdown from "@/app/components/forms/select";
 
 type Props = {
   loanId: string;
   onClose: () => void;
 };
 
+type FormFields = {
+  purpose: string;
+  amount: string;
+  status: string
+}
+
 export default function LoanEditForm({ loanId, onClose }: Props) {
-  const [form, setForm] = useState({ purpose: "", amount: "" });
-  const [errors, setErrors] = useState<{ purpose?: LoanPurpose; amount?: string }>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: loan, isLoading } = useGetLoanById(loanId);
+  const { mutate, isPending } = useUpdateLoan(loanId);
+
+  const [form, setForm] = useState<FormFields>({ purpose: "", amount: "", status: "" });
+  const [errors, setErrors] = useState<Partial<typeof form>>({});
 
   useEffect(() => {
-    const fetchLoan = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`/api/loans/${loanId}`);
-        const data = await res.json();
-        setForm({ purpose: data.purpose, amount: String(data.amount) });
-      } catch (err) {
-        console.error("Failed to fetch loan:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchLoan();
-  }, [loanId]);
+    if (loan) {
+      setForm({
+        purpose: loan.purpose,
+        amount: String(loan.amount),
+        status: loan.status,
+      });
+    }
+  }, [loan]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handlePurposeSelect = (value: LoanPurpose) => {
-    setForm({ ...form, purpose: value });
+  const handlePurposeSelect = (value: LoanPurposeKey | LoanStatusKey, field: "purpose" | "status") => {
+    setForm({ ...form, [field]: value });
   };
 
   const validate = () => {
-    const errs: typeof errors = {};
-    if (!Number(form.amount) || isNaN(Number(form.amount))) errs.amount = "Amount must be a number";
+    const errs: Partial<typeof form> = {};
+    if (!Number(form.amount)) errs.amount = "Amount must be a valid number";
     return errs;
   };
 
@@ -54,50 +57,65 @@ export default function LoanEditForm({ loanId, onClose }: Props) {
     if (Object.keys(errs).length) return setErrors(errs);
 
     mutate(
-      { purpose: form.purpose, amount: Number(form.amount) },
-      { onSuccess: () => onClose() }
+      {
+        amount: Number(form.amount),
+        purpose: form.purpose,
+        status: form.status,
+      },
+      {
+        onSuccess: onClose,
+      }
     );
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
       <h2 className="text-xl font-semibold mb-6">Modify Loan Details</h2>
 
-      <div className="space-y-4 w-full">
-        <BaseInputGroup label="Amount" errorMsg={errors.amount}>
-          <BaseInput
-            name="amount"
-            type="number"
-            value={form.amount}
-            placeholder="Enter loan amount"
-            min={MINIMUM_LOAN}
-            max={MAXIMUM_LOAN}
-            onChange={handleChange}
-            disabled={isLoading}
-          />
-        </BaseInputGroup>
+      <BaseInputGroup label="Amount" errorMsg={errors.amount}>
+        <BaseInput
+          name="amount"
+          type="number"
+          value={form.amount}
+          placeholder="Enter loan amount"
+          min={MINIMUM_LOAN}
+          max={MAXIMUM_LOAN}
+          onChange={handleChange}
+          disabled={isLoading || isPending}
+        />
+      </BaseInputGroup>
 
-        <BaseInputGroup label="Purpose" errorMsg={errors.purpose}>
-          <PurposeSelect
-            selected={form.purpose as LoanPurposeKey}
-            label="Select Loan Purpose"
-            onChange={handlePurposeSelect}
-            options={LOAN_PURPOSE_OPTIONS}
-            defaultValue={form.purpose}
-            required
-            disabled={isLoading}
-          />
-        </BaseInputGroup>
+      <BaseInputGroup label="Status" errorMsg={errors.status}>
+        <SelectDropdown
+          selected={form.status as LoanStatusKey}
+          label="Loan Status"
+          onChange={(v) => handlePurposeSelect(v, "status")}
+          options={LOAN_STATUS_OPTIONS}
+          disabled={isLoading || isPending}
+          required
+        />
+      </BaseInputGroup>
 
-        <div className="flex justify-end gap-2">
-          <div className="w-full max-w-[80px]">
-            <FormCancelButton label="Cancel" onClick={onClose} disabled={isLoading} />
-          </div>
-          <div className="w-full max-w-[80px]">
-            <FormSubmitButton label="Submit" disabled={isLoading} />
-          </div>
+      <BaseInputGroup label="Purpose" errorMsg={errors.purpose}>
+        <SelectDropdown
+          selected={form.purpose as LoanPurposeKey}
+          label="Loan Purpose"
+          onChange={(v) => handlePurposeSelect(v, "purpose")}
+          options={LOAN_PURPOSE_OPTIONS}
+          // defaultValue={LOAN_PURPOSE_OPTIONS[0].label}
+          disabled={isLoading || isPending}
+          required
+        />
+      </BaseInputGroup>
+
+      <div className="flex justify-end gap-2">
+        <div className="w-full max-w-[80px]">
+          <FormCancelButton label="Cancel" onClick={onClose} disabled={isLoading || isPending} />
+        </div>
+        <div className="w-full max-w-[80px]">
+          <FormSubmitButton label="Submit" disabled={isLoading || isPending} />
         </div>
       </div>
-    </div>
+    </form>
   );
 }

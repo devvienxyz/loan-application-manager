@@ -33,10 +33,6 @@ export type LoanPurposeLabel = (typeof LoanPurposes)[LoanPurposeKey];
  */
 
 export type CreateLoanPayload = {
-  purpose: string; amount: number;
+  purpose: string; amount: number; status: string;
 };
-export type UpdateLoanPayload = Partial<{
-  purpose?: string;
-  status?: LoanStatus;
-  amount?: number;
-}>;
+export type UpdateLoanPayload = Partial<CreateLoanPayload>;

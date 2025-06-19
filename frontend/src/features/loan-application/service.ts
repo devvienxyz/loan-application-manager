@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { CreateLoanPayload } from "@loan-app-mgr/shared/types/loans";
+import { CreateLoanPayload, UpdateLoanPayload } from "@loan-app-mgr/shared/types/loans";
 import { QueryFunctionContext } from "@tanstack/react-query";
 
 export const fetchLoans = async ({ queryKey }: QueryFunctionContext) => {
@@ -15,12 +15,17 @@ export const fetchLoans = async ({ queryKey }: QueryFunctionContext) => {
   return res.data; // should return { loans: LoanApplication[]; total: number }
 };
 
+export const getLoanById = async (loanId: string) => {
+  const { data } = await api.get(`/loans/${loanId}`);
+  return data;
+};
+
 export const createLoan = async (data: CreateLoanPayload) => {
   const res = await api.post("/loans/apply", data);
   return res.data;
 };
 
-export const updateLoan = async (loanId: string, data: Partial<CreateLoanPayload>) => {
+export const updateLoan = async (loanId: string, data: UpdateLoanPayload) => {
   const res = await api.patch(`/loans/${loanId}`, data);
   return res.data;
 };
