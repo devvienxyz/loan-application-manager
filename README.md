@@ -1,8 +1,7 @@
 # loan-application-manager
 
-Monorepo for a full-stack loan application management system.
-
-📌 Github repository for this project: [devvienxyz/loan-application-manager](https://github.com/devvienxyz/loan-application-manager)
+Monorepo for managing loan applications.
+GitHub: devvienxyz/loan-application-manager
 
 ## 🧱 Tech Stack
 
@@ -50,7 +49,17 @@ npm install  # Installs all workspace dependencies
 
 ### 3. Run Everything
 
+1. Configure secrets via root .env for global secrets. There is a .env.template you can copy its contents.
+
+2. Build docker project
+
+Please run commands based on your OS. I am using Ubuntu 22.
+
 ```bash
+### Ubuntu ###
+./scripts/docker.sh up-build
+
+### Windows ###
 docker compose up --build
 ```
 
@@ -58,35 +67,29 @@ API: <http://localhost:3000>
 
 Frontend: <http://localhost:5173>
 
-PostgreSQL: port 5432
+PostgreSQL: port 5432 through Docker compose project service `database`
 
 ## 🛠 Development
 
-Migrations
+1. Create Admin User
+
+Please run commands based on your OS. I am using Ubuntu 22.
 
 ```bash
-./scripts/docker.sh bash
-cd backend && npm prisma:migrate
+### Ubuntu ###
+./scripts/docker.sh bash-be
+cd backend && npm run dev-admin
+# follow prompts (email, fullName)
+
+### Windows ###
+docker compose exec -it frontend sh
+cd backend && npm run dev-admin
+# follow prompts (email, fullName)
 ```
 
-Seed Database
+If you need to destroy everything including the db, run `./scripts/docker.sh nuke`.
 
-```bash
-npm run --workspace=backend prisma db seed --schema=../backend/prisma/schema.prisma
-```
-
-Format/Lint Staged
-
-```bash
-npm run format-check-staged
-npm run format-fix-staged
-```
-
-## 🔒 Environments
-
-Configure secrets via .env files:
-
-Root .env for global secrets
+If you rebuild but want to keep the db, run `./scripts/docker.sh down`.
 
 ## Testing
 
@@ -94,6 +97,16 @@ Root .env for global secrets
 # run on root dir
 npm run test
 ```
+
+## 👤 User Flow
+
+1. Open <http://localhost:5173>
+
+2. Register and log in
+
+3. Apply for a loan
+
+4. Use dev-admin script to assign admin role if needed
 
 ## 🤝 License
 
