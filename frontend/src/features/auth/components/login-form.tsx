@@ -23,7 +23,7 @@ export default function LoginForm({ onSubmit }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 flex w-full flex-col">
+    <form onSubmit={handleSubmit} className="space-y-4 flex w-full flex-col" aria-label="Login Form">
       <BaseEmailInput value={form.email} onChange={handleChange} />
 
       <BasePasswordInput value={form.password} onChange={handleChange} />
