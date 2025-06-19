@@ -9,7 +9,7 @@ type Props = {
 export default function TablePagination({ page, pageSize, total, setPage, totalPages }: Props) {
   return (
     <div className="flex justify-between px-4 py-3">
-      <div className="text-sm text-slate-500">
+      <div className="text-sm text-slate-500" aria-label="pagination-range">
         Showing <b>{(page - 1) * pageSize + 1}</b> to <b>{Math.min(page * pageSize, total)}</b> of {total}
       </div>
       <div className="flex gap-1">
