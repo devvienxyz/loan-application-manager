@@ -25,7 +25,8 @@ export default defineConfig({
         "**/__tests__/**",
         "**/*.d.ts",
         "src/main.tsx",
-        "src/App.tsx"
+        "src/App.tsx",
+        "src/__mocks__"
       ],
       all: true,
       include: ["src/**/*.{ts,tsx}"],
