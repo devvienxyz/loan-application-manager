@@ -16,7 +16,7 @@ router.use(authenticate);
 router.get("/", getAllUserLoans);
 router.post("/apply", applyForLoan);
 router.get("/:loanId", getLoanDetails);
-router.put("/:loanId", updateLoan);
+router.patch("/:loanId", updateLoan);
 router.delete("/:loanId", deleteLoan);
 
 export default router;
