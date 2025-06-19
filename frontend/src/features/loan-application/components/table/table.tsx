@@ -15,7 +15,7 @@ export default function LoanApplicationsTable({ handleView, handleEdit }: Props)
   const isAdmin = user?.role && user.role.toLowerCase() === "admin";
 
   const { page, pageSize, search, setPage, setSearch } = useLoanAppStore();
-  const { data, isLoading } = useLoans();
+  const { data, isLoading } = useLoans() as { data: { total: number; loans: any[] } | null; isLoading: boolean };
 
   const [searchTerm, setSearchTerm] = useState(search);
   const { mutate: removeLoan } = useDeleteLoan();
@@ -31,7 +31,7 @@ export default function LoanApplicationsTable({ handleView, handleEdit }: Props)
     }
   }
 
-  const total = data?.total ?? 0;
+  const total = data ? data.total : 0;
   const loanList = data?.loans ?? [];
   const totalPages = Math.ceil(total / pageSize);
 

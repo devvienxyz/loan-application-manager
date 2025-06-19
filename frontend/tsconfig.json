@@ -8,7 +8,7 @@
 		"types": ["vitest/globals", "@testing-library/jest-dom"],
 		"baseUrl": "./",
 		"paths": {
-			"@/*": ["src/*"],
+      "@/*": ["src/*"],
 			"@loan-app-mgr/shared/*": ["../shared/src/*"]
 		},
 		"moduleResolution": "bundler",
