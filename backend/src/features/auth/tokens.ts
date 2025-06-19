@@ -6,7 +6,7 @@ const config = getConfig();
 
 export const signAccessToken = (payload: AuthTokenPayload) => {
   const { exp, iat, ...cleanPayload } = payload;
-  return jwt.sign(cleanPayload, config.accessTokenSecret, { expiresIn: "1m" });
+  return jwt.sign(cleanPayload, config.accessTokenSecret, { expiresIn: "15m" });
 }
 
 export const signRefreshToken = (payload: AuthTokenPayload) => {

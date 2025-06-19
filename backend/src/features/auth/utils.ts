@@ -11,7 +11,7 @@ export const setAuthCookies = (res: Response, accessToken: string, refreshToken:
       signed: true,
       sameSite: config.isProd ? "strict" : "lax",
       secure: config.isProd,
-      maxAge: 1 * 60 * 1000,
+      maxAge: 15 * 60 * 1000,
     })
     .cookie("refresh_token", refreshToken, {
       httpOnly: true,
