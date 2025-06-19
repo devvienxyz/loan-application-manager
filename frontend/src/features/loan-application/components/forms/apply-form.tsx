@@ -3,7 +3,6 @@ import { BaseInput, BaseInputGroup } from "@/app/components/forms/inputs";
 import { LOAN_PURPOSE_OPTIONS, MAXIMUM_LOAN, MINIMUM_LOAN } from "@loan-app-mgr/shared/constants/loans";
 import { useState } from "react";
 import { useCreateLoan } from "../../hooks/useLoans";
-import PurposeSelect from "../table/purpose-select";
 import { LoanPurpose } from "@loan-app-mgr/shared/types/loans";
 import SelectDropdown from "@/app/components/forms/select";
 
